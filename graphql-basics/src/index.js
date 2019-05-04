@@ -6,6 +6,7 @@ const typeDefs = `
     greeting(name: String): String!
     me: User!
     post: Post!
+    add(a: Float!, b: Float!): Float!
   }
 
   type User {
@@ -26,7 +27,10 @@ const typeDefs = `
 // Resolvers
 const resolvers = {
   Query: {
-    greeting: (parent, { name }, ctx) => {
+    add: (parent, { a = 0, b = 0 }, ctx, info) => {
+      return a + b
+    },
+    greeting: (parent, { name }, ctx, info) => {
       return `Hello ${name || 'Stranger'}!`
     },
     me: () => ({
