@@ -91,7 +91,7 @@ const Mutation = {
   createComment: (
     parent,
     { data },
-    { db: { users, posts, comments } },
+    { db: { users, posts, comments }, pubsub },
     info
   ) => {
     if (!users.some(user => user.id === data.author)) {
@@ -101,12 +101,14 @@ const Mutation = {
     if (!posts.some(post => post.id === data.post)) {
       throw new Error('invalid post')
     }
-    const newComment = {
+    const comment = {
       id: uuid(),
       ...data
     }
-    comments.push(newComment)
-    return newComment
+    comments.push(comment)
+    pubsub.publish(`comment ${data.post}`, { comment })
+
+    return comment
   },
   updateComment: (parent, { id, data }, { db }, info) => {
     const comment = db.comments.find(comment => comment.id === id)
