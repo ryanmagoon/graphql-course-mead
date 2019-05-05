@@ -74,51 +74,6 @@ let comments = [
   }
 ]
 
-// Type definitions (schemas)
-const typeDefs = `
-  type Query {
-    users(query: String): [User!]!
-    me: User!
-    post: Post!
-    comments: [Comment!]!
-    posts: [Post!]!
-  }
-
-  type Mutation {
-    createUser(name: String!, email: String!, age: Int): User!
-    createPost(title: String!, body: String!, published: Boolean!, author: ID!): Post!
-    createComment(text: String!, author: ID!, post: ID!): Comment!
-    deleteUser(id: ID!): User!
-    deletePost(id: ID!): Post!
-    deleteComment(id: ID!): Comment!
-  }
-
-  type User {
-    id: ID!
-    name: String!
-    email: String!
-    age: Int
-    posts: [Post]!
-    comments: [Comment]!
-  }
-
-  type Post {
-    id: ID!
-    title: String!
-    body: String!
-    published: Boolean!
-    author: User!
-    comments: [Comment]!
-  }
-
-  type Comment {
-    id: ID!
-    text: String!
-    author: User!
-    post: Post!
-  }
-`
-
 // Resolvers
 const resolvers = {
   Query: {
@@ -249,7 +204,7 @@ const resolvers = {
 }
 
 const server = new GraphQLServer({
-  typeDefs,
+  typeDefs: './src/schema.graphql',
   resolvers
 })
 
