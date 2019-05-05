@@ -201,6 +201,17 @@ const resolvers = {
       comments.push(newComment)
       return newComment
     },
+    deleteComment: (parent, args, ctx, info) => {
+      const commentIndex = comments.findIndex(comment => comment.id === args.id)
+
+      if (commentIndex === -1) {
+        throw new Error('comment not found')
+      }
+
+      const deletedComments = comments.splice(commentIndex, 1)
+
+      return deletedComments[0]
+    },
     deletePost: (parent, args, ctx, info) => {
       const postIndex = posts.findIndex(post => post.id === args.id)
 
