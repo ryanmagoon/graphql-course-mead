@@ -88,6 +88,7 @@ const typeDefs = `
     createUser(name: String!, email: String!, age: Int): User!
     createPost(title: String!, body: String!, published: Boolean!, author: ID!): Post!
     deleteUser(id: ID!): User!
+    deletePost(id: ID!): Post!
   }
 
   type User {
@@ -182,6 +183,19 @@ const resolvers = {
       }
       posts.push(newPost)
       return newPost
+    },
+    deletePost: (parent, args, ctx, info) => {
+      const postIndex = posts.findIndex(post => post.id === args.id)
+
+      if (postIndex === -1) {
+        throw new Error('Post not found')
+      }
+
+      const deletedPosts = posts.splice(postIndex, 1)
+
+      comments = comments.filter(comment => comment.post !== args.id)
+
+      return deletedPosts[0]
     }
   },
   Post: {
