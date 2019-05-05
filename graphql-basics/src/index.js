@@ -50,22 +50,26 @@ const comments = [
   {
     id: '1',
     text: 'hello!',
-    author: '1'
+    author: '1',
+    post: '3'
   },
   {
     id: '2',
     text: 'celery man!',
-    author: '1'
+    author: '1',
+    post: '3'
   },
   {
     id: '3',
     text: 'potatoes!',
-    author: '666'
+    author: '666',
+    post: '1'
   },
   {
     id: '4',
     text: 'caribou!',
-    author: '2'
+    author: '2',
+    post: '2'
   }
 ]
 
@@ -76,6 +80,7 @@ const typeDefs = `
     me: User!
     post: Post!
     comments: [Comment!]!
+    posts: [Post!]!
   }
 
   type User {
@@ -93,12 +98,14 @@ const typeDefs = `
     body: String!
     published: Boolean!
     author: User!
+    comments: [Comment]!
   }
 
   type Comment {
     id: ID!
     text: String!
     author: User!
+    post: Post!
   }
 `
 
@@ -123,11 +130,14 @@ const resolvers = {
       body: 'get posted on',
       published: false
     }),
-    comments: () => comments
+    comments: () => comments,
+    posts: () => posts
   },
   Post: {
     author: ({ author }, args, ctx, info) =>
-      users.find(({ id }) => id === author)
+      users.find(({ id }) => id === author),
+    comments: (parent, args, ctx, info) =>
+      comments.filter(comment => comment.post === parent.id)
   },
   User: {
     posts: (parent, args, ctx, info) =>
@@ -138,6 +148,9 @@ const resolvers = {
   Comment: {
     author: (parent, args, ctx, info) => {
       return users.find(user => user.id === parent.author)
+    },
+    post: (parent, args, ctx, info) => {
+      return posts.find(post => post.id === parent.post)
     }
   }
 }
