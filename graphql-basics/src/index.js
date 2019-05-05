@@ -2,7 +2,7 @@ import { GraphQLServer } from 'graphql-yoga'
 import uuid from 'uuid/v4'
 
 //Demo User data
-const users = [
+let users = [
   {
     id: '1',
     name: 'Ryan',
@@ -23,7 +23,7 @@ const users = [
   }
 ]
 
-const posts = [
+let posts = [
   {
     id: '1',
     title: 'my first post',
@@ -47,7 +47,7 @@ const posts = [
   }
 ]
 
-const comments = [
+let comments = [
   {
     id: '1',
     text: 'hello!',
@@ -86,6 +86,8 @@ const typeDefs = `
 
   type Mutation {
     createUser(name: String!, email: String!, age: Int): User!
+    createPost(title: String!, body: String!, published: Boolean!, author: ID!): Post!
+    deleteUser(id: ID!): User!
   }
 
   type User {
@@ -139,18 +141,47 @@ const resolvers = {
     posts: () => posts
   },
   Mutation: {
-    createUser: (parent, { name, email, age }, ctx, info) => {
-      if (users.some(user => user.email === email)) {
+    createUser: (parent, args, ctx, info) => {
+      if (users.some(user => user.email === args.email)) {
         throw new Error('email taken')
       }
       const newUser = {
         id: uuid(),
-        name,
-        email,
-        age
+        ...args
       }
       users.push(newUser)
       return newUser
+    },
+    deleteUser: (parent, args, ctx, info) => {
+      const userIndex = users.findIndex(user => user.id === args.id)
+
+      if (userIndex === -1) {
+        throw new Error('User not found')
+      }
+
+      const deletedUsers = users.splice(userIndex, 1)
+
+      posts = posts.filter(post => {
+        const match = post.author === args.id
+        if (match) {
+          comments = comments.filter(comment => comment.post !== post.id)
+        }
+        return !match
+      })
+      comments = comments.filter(comment => comment.author !== args.id)
+
+      return deletedUsers[0]
+    },
+    createPost: (parent, args, ctx, info) => {
+      if (!users.some(user => user.id === args.author)) {
+        throw new Error('invalid user')
+      }
+      const newPost = {
+        id: uuid(),
+        ...args
+      }
+      posts.push(newPost)
+      return newPost
     }
   },
   Post: {
