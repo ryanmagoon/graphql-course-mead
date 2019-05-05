@@ -1,16 +1,40 @@
 import uuid from 'uuid/v4'
 
 const Mutation = {
-  createUser: (parent, args, { db: { users } }, info) => {
-    if (users.some(user => user.email === args.email)) {
+  createUser: (parent, { data }, { db: { users } }, info) => {
+    if (users.some(user => user.email === data.email)) {
       throw new Error('email taken')
     }
     const newUser = {
       id: uuid(),
-      ...args
+      ...data
     }
     users.push(newUser)
     return newUser
+  },
+  updateUser: (parent, { id, data }, { db }, info) => {
+    const user = db.users.find(user => user.id === id)
+
+    if (!user) {
+      throw new Error('User not found')
+    }
+
+    if (typeof data.email === 'string') {
+      const emailTaken = db.users.some(user => user.email === data.email)
+      if (emailTaken) {
+        throw new Error('Email taken')
+      }
+    }
+
+    if (typeof data.name === 'string') {
+      user.name = data.name
+    }
+
+    if (typeof data.age !== 'undefined') {
+      user.age = data.age
+    }
+
+    return user
   },
   deleteUser: (parent, args, { db: { users, posts, comments } }, info) => {
     const userIndex = users.findIndex(user => user.id === args.id)
@@ -32,28 +56,33 @@ const Mutation = {
 
     return deletedUsers[0]
   },
-  createPost: (parent, args, { db: { users, posts } }, info) => {
-    if (!users.some(user => user.id === args.author)) {
+  createPost: (parent, { data }, { db: { users, posts } }, info) => {
+    if (!users.some(user => user.id === data.author)) {
       throw new Error('invalid user')
     }
     const newPost = {
       id: uuid(),
-      ...args
+      ...data
     }
     posts.push(newPost)
     return newPost
   },
-  createComment: (parent, args, { db: { users, posts, comments } }, info) => {
-    if (!users.some(user => user.id === args.author)) {
+  createComment: (
+    parent,
+    { data },
+    { db: { users, posts, comments } },
+    info
+  ) => {
+    if (!users.some(user => user.id === data.author)) {
       throw new Error('invalid user')
     }
 
-    if (!posts.some(post => post.id === args.post)) {
+    if (!posts.some(post => post.id === data.post)) {
       throw new Error('invalid post')
     }
     const newComment = {
       id: uuid(),
-      ...args
+      ...data
     }
     comments.push(newComment)
     return newComment
