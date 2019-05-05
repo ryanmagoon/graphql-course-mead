@@ -87,8 +87,10 @@ const typeDefs = `
   type Mutation {
     createUser(name: String!, email: String!, age: Int): User!
     createPost(title: String!, body: String!, published: Boolean!, author: ID!): Post!
+    createComment(text: String!, author: ID!, post: ID!): Comment!
     deleteUser(id: ID!): User!
     deletePost(id: ID!): Post!
+    deleteComment(id: ID!): Comment!
   }
 
   type User {
@@ -183,6 +185,21 @@ const resolvers = {
       }
       posts.push(newPost)
       return newPost
+    },
+    createComment: (parent, args, ctx, info) => {
+      if (!users.some(user => user.id === args.author)) {
+        throw new Error('invalid user')
+      }
+
+      if (!posts.some(post => post.id === args.post)) {
+        throw new Error('invalid post')
+      }
+      const newComment = {
+        id: uuid(),
+        ...args
+      }
+      comments.push(newComment)
+      return newComment
     },
     deletePost: (parent, args, ctx, info) => {
       const postIndex = posts.findIndex(post => post.id === args.id)
