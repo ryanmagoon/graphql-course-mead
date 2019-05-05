@@ -56,7 +56,7 @@ const Mutation = {
 
     return deletedUsers[0]
   },
-  createPost: (parent, { data }, { db: { users, posts } }, info) => {
+  createPost: (parent, { data }, { db: { users, posts }, pubsub }, info) => {
     if (!users.some(user => user.id === data.author)) {
       throw new Error('invalid user')
     }
@@ -65,6 +65,10 @@ const Mutation = {
       ...data
     }
     posts.push(newPost)
+    if (data.published === true) {
+      pubsub.publish('post', { post: newPost })
+    }
+
     return newPost
   },
   updatePost: (parent, { id, data }, { db }, info) => {
