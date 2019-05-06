@@ -85,7 +85,7 @@ type Comment {
 
 type CommentSubscriptionPayload {
   mutation: String!
-  data: Post!
+  data: Comment!
 }
 
 type PostSubscriptionPayload {
