@@ -43,7 +43,7 @@ const Mutation = {
       throw new Error('User not found')
     }
 
-    const deletedUsers = users.splice(userIndex, 1)
+    const [deletedUser] = users.splice(userIndex, 1)
 
     posts = posts.filter(post => {
       const match = post.author === args.id
@@ -54,7 +54,7 @@ const Mutation = {
     })
     comments = comments.filter(comment => comment.author !== args.id)
 
-    return deletedUsers[0]
+    return deletedUser
   },
   createPost: (parent, { data }, { db: { users, posts }, pubsub }, info) => {
     if (!users.some(user => user.id === data.author)) {
@@ -76,8 +76,9 @@ const Mutation = {
 
     return newPost
   },
-  updatePost: (parent, { id, data }, { db }, info) => {
+  updatePost: (parent, { id, data }, { db, pubsub }, info) => {
     const post = db.posts.find(post => post.id === id)
+    const originalPost = { ...post }
 
     if (!post) {
       throw new Error('Post not found')
@@ -93,6 +94,29 @@ const Mutation = {
 
     if (typeof data.published === 'boolean') {
       post.published = data.published
+
+      if (originalPost.published && !post.published) {
+        pubsub.publish('post', {
+          post: {
+            mutation: 'DELETED',
+            data: originalPost
+          }
+        })
+      } else if (!originalPost.published && post.published) {
+        pubsub.publish('post', {
+          post: {
+            mutation: 'CREATED',
+            data: post
+          }
+        })
+      } else if (post.published) {
+        pubsub.publish('post', {
+          post: {
+            mutation: 'UPDATED',
+            data: post
+          }
+        })
+      }
     }
 
     return post
@@ -144,22 +168,31 @@ const Mutation = {
       throw new Error('comment not found')
     }
 
-    const deletedComments = comments.splice(commentIndex, 1)
+    const [deletedComment] = comments.splice(commentIndex, 1)
 
-    return deletedComments[0]
+    return deletedComment
   },
-  deletePost: (parent, args, { db: { posts, comments } }, info) => {
+  deletePost: (parent, args, { db: { posts, comments }, pubsub }, info) => {
     const postIndex = posts.findIndex(post => post.id === args.id)
 
     if (postIndex === -1) {
       throw new Error('Post not found')
     }
 
-    const deletedPosts = posts.splice(postIndex, 1)
+    const [deletedPost] = posts.splice(postIndex, 1)
 
     comments = comments.filter(comment => comment.post !== args.id)
 
-    return deletedPosts[0]
+    if (deletedPost.published) {
+      pubsub.publish('post', {
+        post: {
+          mutation: 'DELETED',
+          data: deletedPost
+        }
+      })
+    }
+
+    return deletedPost
   }
 }
 
