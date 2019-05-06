@@ -2,9 +2,9 @@ type User {
   id: ID! @id
   name: String!
   email: String! @unique
+  posts: [Post!]!
   createdAt: DateTime! @createdAt
   updatedAt: DateTime! @updatedAt
-  posts: [Post!]!
 }
 
 type Post {
@@ -13,4 +13,6 @@ type Post {
   body: String!
   published: Boolean!
   author: User!
+  createdAt: DateTime! @createdAt
+  updatedAt: DateTime! @updatedAt
 }
