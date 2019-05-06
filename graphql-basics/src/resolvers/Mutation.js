@@ -141,7 +141,7 @@ const Mutation = {
     comments.push(comment)
     pubsub.publish(`comment ${data.post}`, {
       comment: {
-        mutation: 'CREATE',
+        mutation: 'CREATED',
         data: comment
       }
     })
@@ -161,7 +161,7 @@ const Mutation = {
 
     pubsub.publish(`comment ${comment.post}`, {
       comment: {
-        mutation: 'UPDATE',
+        mutation: 'UPDATED',
         data: comment
       }
     })
@@ -179,7 +179,7 @@ const Mutation = {
 
     pubsub.publish(`comment ${deletedComment.post}`, {
       comment: {
-        mutation: 'DELETE',
+        mutation: 'DELETED',
         data: deletedComment
       }
     })
