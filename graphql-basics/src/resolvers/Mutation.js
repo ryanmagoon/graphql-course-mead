@@ -66,7 +66,12 @@ const Mutation = {
     }
     posts.push(newPost)
     if (data.published === true) {
-      pubsub.publish('post', { post: newPost })
+      pubsub.publish('post', {
+        post: {
+          mutation: 'CREATED',
+          data: newPost
+        }
+      })
     }
 
     return newPost
@@ -110,7 +115,12 @@ const Mutation = {
       ...data
     }
     comments.push(comment)
-    pubsub.publish(`comment ${data.post}`, { comment })
+    pubsub.publish(`comment ${data.post}`, {
+      comment: {
+        mutation: 'CREATE',
+        data: comment
+      }
+    })
 
     return comment
   },
