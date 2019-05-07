@@ -1,5 +1,8 @@
 const Query = {
-  users: (parent, { query }, { db: { users } }, info) => {
+  users: async (parent, { query }, { db: { users }, prisma }, info) => {
+    const prismaUsers = await prisma.users()
+    console.log('hello from resolver')
+    console.log(prismaUsers)
     return query
       ? users.filter(({ name }) =>
           name.toLowerCase().includes(query.toLowerCase())

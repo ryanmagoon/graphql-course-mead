@@ -16,7 +16,8 @@
     "@babel/node": "^7.2.2",
     "@babel/preset-env": "^7.4.4",
     "graphql-yoga": "^1.17.4",
-    "node-uuid": "^1.4.8"
+    "node-uuid": "^1.4.8",
+    "prisma-client-lib": "^1.30.4"
   },
   "devDependencies": {
     "nodemon": "^1.19.0"
