@@ -1,0 +1,24 @@
+{
+  "name": "graphql-basics",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon src/index.js --ext js,graphql --exec babel-node",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "Ryan Magoon <mr.magoon5@gmail.com> (http://www.ryanmagoon.com)",
+  "license": "MIT",
+  "dependencies": {
+    "@babel/cli": "^7.4.4",
+    "@babel/core": "^7.4.4",
+    "@babel/node": "^7.2.2",
+    "@babel/preset-env": "^7.4.4",
+    "graphql-yoga": "^1.17.4",
+    "node-uuid": "^1.4.8"
+  },
+  "devDependencies": {
+    "nodemon": "^1.19.0"
+  }
+}
