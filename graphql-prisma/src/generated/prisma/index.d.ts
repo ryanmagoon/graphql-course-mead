@@ -16,8 +16,8 @@ export type AtLeastOne<T, U = { [K in keyof T]: Pick<T, K> }> = Partial<T> &
 export type Maybe<T> = T | undefined | null;
 
 export interface Exists {
-  book: (where?: BookWhereInput) => Promise<boolean>;
-  review: (where?: ReviewWhereInput) => Promise<boolean>;
+  comment: (where?: CommentWhereInput) => Promise<boolean>;
+  post: (where?: PostWhereInput) => Promise<boolean>;
   user: (where?: UserWhereInput) => Promise<boolean>;
 }
 
@@ -40,44 +40,44 @@ export interface Prisma {
    * Queries
    */
 
-  book: (where: BookWhereUniqueInput) => BookNullablePromise;
-  books: (args?: {
-    where?: BookWhereInput;
-    orderBy?: BookOrderByInput;
+  comment: (where: CommentWhereUniqueInput) => CommentNullablePromise;
+  comments: (args?: {
+    where?: CommentWhereInput;
+    orderBy?: CommentOrderByInput;
     skip?: Int;
     after?: String;
     before?: String;
     first?: Int;
     last?: Int;
-  }) => FragmentableArray<Book>;
-  booksConnection: (args?: {
-    where?: BookWhereInput;
-    orderBy?: BookOrderByInput;
+  }) => FragmentableArray<Comment>;
+  commentsConnection: (args?: {
+    where?: CommentWhereInput;
+    orderBy?: CommentOrderByInput;
     skip?: Int;
     after?: String;
     before?: String;
     first?: Int;
     last?: Int;
-  }) => BookConnectionPromise;
-  review: (where: ReviewWhereUniqueInput) => ReviewNullablePromise;
-  reviews: (args?: {
-    where?: ReviewWhereInput;
-    orderBy?: ReviewOrderByInput;
+  }) => CommentConnectionPromise;
+  post: (where: PostWhereUniqueInput) => PostNullablePromise;
+  posts: (args?: {
+    where?: PostWhereInput;
+    orderBy?: PostOrderByInput;
     skip?: Int;
     after?: String;
     before?: String;
     first?: Int;
     last?: Int;
-  }) => FragmentableArray<Review>;
-  reviewsConnection: (args?: {
-    where?: ReviewWhereInput;
-    orderBy?: ReviewOrderByInput;
+  }) => FragmentableArray<Post>;
+  postsConnection: (args?: {
+    where?: PostWhereInput;
+    orderBy?: PostOrderByInput;
     skip?: Int;
     after?: String;
     before?: String;
     first?: Int;
     last?: Int;
-  }) => ReviewConnectionPromise;
+  }) => PostConnectionPromise;
   user: (where: UserWhereUniqueInput) => UserNullablePromise;
   users: (args?: {
     where?: UserWhereInput;
@@ -103,38 +103,38 @@ export interface Prisma {
    * Mutations
    */
 
-  createBook: (data: BookCreateInput) => BookPromise;
-  updateBook: (args: {
-    data: BookUpdateInput;
-    where: BookWhereUniqueInput;
-  }) => BookPromise;
-  updateManyBooks: (args: {
-    data: BookUpdateManyMutationInput;
-    where?: BookWhereInput;
+  createComment: (data: CommentCreateInput) => CommentPromise;
+  updateComment: (args: {
+    data: CommentUpdateInput;
+    where: CommentWhereUniqueInput;
+  }) => CommentPromise;
+  updateManyComments: (args: {
+    data: CommentUpdateManyMutationInput;
+    where?: CommentWhereInput;
   }) => BatchPayloadPromise;
-  upsertBook: (args: {
-    where: BookWhereUniqueInput;
-    create: BookCreateInput;
-    update: BookUpdateInput;
-  }) => BookPromise;
-  deleteBook: (where: BookWhereUniqueInput) => BookPromise;
-  deleteManyBooks: (where?: BookWhereInput) => BatchPayloadPromise;
-  createReview: (data: ReviewCreateInput) => ReviewPromise;
-  updateReview: (args: {
-    data: ReviewUpdateInput;
-    where: ReviewWhereUniqueInput;
-  }) => ReviewPromise;
-  updateManyReviews: (args: {
-    data: ReviewUpdateManyMutationInput;
-    where?: ReviewWhereInput;
+  upsertComment: (args: {
+    where: CommentWhereUniqueInput;
+    create: CommentCreateInput;
+    update: CommentUpdateInput;
+  }) => CommentPromise;
+  deleteComment: (where: CommentWhereUniqueInput) => CommentPromise;
+  deleteManyComments: (where?: CommentWhereInput) => BatchPayloadPromise;
+  createPost: (data: PostCreateInput) => PostPromise;
+  updatePost: (args: {
+    data: PostUpdateInput;
+    where: PostWhereUniqueInput;
+  }) => PostPromise;
+  updateManyPosts: (args: {
+    data: PostUpdateManyMutationInput;
+    where?: PostWhereInput;
   }) => BatchPayloadPromise;
-  upsertReview: (args: {
-    where: ReviewWhereUniqueInput;
-    create: ReviewCreateInput;
-    update: ReviewUpdateInput;
-  }) => ReviewPromise;
-  deleteReview: (where: ReviewWhereUniqueInput) => ReviewPromise;
-  deleteManyReviews: (where?: ReviewWhereInput) => BatchPayloadPromise;
+  upsertPost: (args: {
+    where: PostWhereUniqueInput;
+    create: PostCreateInput;
+    update: PostUpdateInput;
+  }) => PostPromise;
+  deletePost: (where: PostWhereUniqueInput) => PostPromise;
+  deleteManyPosts: (where?: PostWhereInput) => BatchPayloadPromise;
   createUser: (data: UserCreateInput) => UserPromise;
   updateUser: (args: {
     data: UserUpdateInput;
@@ -160,12 +160,12 @@ export interface Prisma {
 }
 
 export interface Subscription {
-  book: (
-    where?: BookSubscriptionWhereInput
-  ) => BookSubscriptionPayloadSubscription;
-  review: (
-    where?: ReviewSubscriptionWhereInput
-  ) => ReviewSubscriptionPayloadSubscription;
+  comment: (
+    where?: CommentSubscriptionWhereInput
+  ) => CommentSubscriptionPayloadSubscription;
+  post: (
+    where?: PostSubscriptionWhereInput
+  ) => PostSubscriptionPayloadSubscription;
   user: (
     where?: UserSubscriptionWhereInput
   ) => UserSubscriptionPayloadSubscription;
@@ -179,19 +179,7 @@ export interface ClientConstructor<T> {
  * Types
  */
 
-export type ReviewOrderByInput =
-  | "id_ASC"
-  | "id_DESC"
-  | "createdAt_ASC"
-  | "createdAt_DESC"
-  | "updatedAt_ASC"
-  | "updatedAt_DESC"
-  | "text_ASC"
-  | "text_DESC"
-  | "rating_ASC"
-  | "rating_DESC";
-
-export type BookOrderByInput =
+export type PostOrderByInput =
   | "id_ASC"
   | "id_DESC"
   | "createdAt_ASC"
@@ -200,8 +188,16 @@ export type BookOrderByInput =
   | "updatedAt_DESC"
   | "title_ASC"
   | "title_DESC"
-  | "isbn_ASC"
-  | "isbn_DESC";
+  | "body_ASC"
+  | "body_DESC"
+  | "published_ASC"
+  | "published_DESC";
+
+export type CommentOrderByInput =
+  | "id_ASC"
+  | "id_DESC"
+  | "text_ASC"
+  | "text_DESC";
 
 export type UserOrderByInput =
   | "id_ASC"
@@ -210,76 +206,18 @@ export type UserOrderByInput =
   | "createdAt_DESC"
   | "updatedAt_ASC"
   | "updatedAt_DESC"
-  | "username_ASC"
-  | "username_DESC";
+  | "name_ASC"
+  | "name_DESC"
+  | "email_ASC"
+  | "email_DESC";
 
 export type MutationType = "CREATED" | "UPDATED" | "DELETED";
 
-export type BookWhereUniqueInput = AtLeastOne<{
+export type CommentWhereUniqueInput = AtLeastOne<{
   id: Maybe<ID_Input>;
 }>;
 
-export interface ReviewWhereInput {
-  id?: Maybe<ID_Input>;
-  id_not?: Maybe<ID_Input>;
-  id_in?: Maybe<ID_Input[] | ID_Input>;
-  id_not_in?: Maybe<ID_Input[] | ID_Input>;
-  id_lt?: Maybe<ID_Input>;
-  id_lte?: Maybe<ID_Input>;
-  id_gt?: Maybe<ID_Input>;
-  id_gte?: Maybe<ID_Input>;
-  id_contains?: Maybe<ID_Input>;
-  id_not_contains?: Maybe<ID_Input>;
-  id_starts_with?: Maybe<ID_Input>;
-  id_not_starts_with?: Maybe<ID_Input>;
-  id_ends_with?: Maybe<ID_Input>;
-  id_not_ends_with?: Maybe<ID_Input>;
-  createdAt?: Maybe<DateTimeInput>;
-  createdAt_not?: Maybe<DateTimeInput>;
-  createdAt_in?: Maybe<DateTimeInput[] | DateTimeInput>;
-  createdAt_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
-  createdAt_lt?: Maybe<DateTimeInput>;
-  createdAt_lte?: Maybe<DateTimeInput>;
-  createdAt_gt?: Maybe<DateTimeInput>;
-  createdAt_gte?: Maybe<DateTimeInput>;
-  updatedAt?: Maybe<DateTimeInput>;
-  updatedAt_not?: Maybe<DateTimeInput>;
-  updatedAt_in?: Maybe<DateTimeInput[] | DateTimeInput>;
-  updatedAt_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
-  updatedAt_lt?: Maybe<DateTimeInput>;
-  updatedAt_lte?: Maybe<DateTimeInput>;
-  updatedAt_gt?: Maybe<DateTimeInput>;
-  updatedAt_gte?: Maybe<DateTimeInput>;
-  text?: Maybe<String>;
-  text_not?: Maybe<String>;
-  text_in?: Maybe<String[] | String>;
-  text_not_in?: Maybe<String[] | String>;
-  text_lt?: Maybe<String>;
-  text_lte?: Maybe<String>;
-  text_gt?: Maybe<String>;
-  text_gte?: Maybe<String>;
-  text_contains?: Maybe<String>;
-  text_not_contains?: Maybe<String>;
-  text_starts_with?: Maybe<String>;
-  text_not_starts_with?: Maybe<String>;
-  text_ends_with?: Maybe<String>;
-  text_not_ends_with?: Maybe<String>;
-  rating?: Maybe<Int>;
-  rating_not?: Maybe<Int>;
-  rating_in?: Maybe<Int[] | Int>;
-  rating_not_in?: Maybe<Int[] | Int>;
-  rating_lt?: Maybe<Int>;
-  rating_lte?: Maybe<Int>;
-  rating_gt?: Maybe<Int>;
-  rating_gte?: Maybe<Int>;
-  book?: Maybe<BookWhereInput>;
-  author?: Maybe<UserWhereInput>;
-  AND?: Maybe<ReviewWhereInput[] | ReviewWhereInput>;
-  OR?: Maybe<ReviewWhereInput[] | ReviewWhereInput>;
-  NOT?: Maybe<ReviewWhereInput[] | ReviewWhereInput>;
-}
-
-export interface BookWhereInput {
+export interface PostWhereInput {
   id?: Maybe<ID_Input>;
   id_not?: Maybe<ID_Input>;
   id_in?: Maybe<ID_Input[] | ID_Input>;
@@ -324,27 +262,29 @@ export interface BookWhereInput {
   title_not_starts_with?: Maybe<String>;
   title_ends_with?: Maybe<String>;
   title_not_ends_with?: Maybe<String>;
+  body?: Maybe<String>;
+  body_not?: Maybe<String>;
+  body_in?: Maybe<String[] | String>;
+  body_not_in?: Maybe<String[] | String>;
+  body_lt?: Maybe<String>;
+  body_lte?: Maybe<String>;
+  body_gt?: Maybe<String>;
+  body_gte?: Maybe<String>;
+  body_contains?: Maybe<String>;
+  body_not_contains?: Maybe<String>;
+  body_starts_with?: Maybe<String>;
+  body_not_starts_with?: Maybe<String>;
+  body_ends_with?: Maybe<String>;
+  body_not_ends_with?: Maybe<String>;
+  published?: Maybe<Boolean>;
+  published_not?: Maybe<Boolean>;
   author?: Maybe<UserWhereInput>;
-  isbn?: Maybe<String>;
-  isbn_not?: Maybe<String>;
-  isbn_in?: Maybe<String[] | String>;
-  isbn_not_in?: Maybe<String[] | String>;
-  isbn_lt?: Maybe<String>;
-  isbn_lte?: Maybe<String>;
-  isbn_gt?: Maybe<String>;
-  isbn_gte?: Maybe<String>;
-  isbn_contains?: Maybe<String>;
-  isbn_not_contains?: Maybe<String>;
-  isbn_starts_with?: Maybe<String>;
-  isbn_not_starts_with?: Maybe<String>;
-  isbn_ends_with?: Maybe<String>;
-  isbn_not_ends_with?: Maybe<String>;
-  reviews_every?: Maybe<ReviewWhereInput>;
-  reviews_some?: Maybe<ReviewWhereInput>;
-  reviews_none?: Maybe<ReviewWhereInput>;
-  AND?: Maybe<BookWhereInput[] | BookWhereInput>;
-  OR?: Maybe<BookWhereInput[] | BookWhereInput>;
-  NOT?: Maybe<BookWhereInput[] | BookWhereInput>;
+  comments_every?: Maybe<CommentWhereInput>;
+  comments_some?: Maybe<CommentWhereInput>;
+  comments_none?: Maybe<CommentWhereInput>;
+  AND?: Maybe<PostWhereInput[] | PostWhereInput>;
+  OR?: Maybe<PostWhereInput[] | PostWhereInput>;
+  NOT?: Maybe<PostWhereInput[] | PostWhereInput>;
 }
 
 export interface UserWhereInput {
@@ -378,182 +318,313 @@ export interface UserWhereInput {
   updatedAt_lte?: Maybe<DateTimeInput>;
   updatedAt_gt?: Maybe<DateTimeInput>;
   updatedAt_gte?: Maybe<DateTimeInput>;
-  username?: Maybe<String>;
-  username_not?: Maybe<String>;
-  username_in?: Maybe<String[] | String>;
-  username_not_in?: Maybe<String[] | String>;
-  username_lt?: Maybe<String>;
-  username_lte?: Maybe<String>;
-  username_gt?: Maybe<String>;
-  username_gte?: Maybe<String>;
-  username_contains?: Maybe<String>;
-  username_not_contains?: Maybe<String>;
-  username_starts_with?: Maybe<String>;
-  username_not_starts_with?: Maybe<String>;
-  username_ends_with?: Maybe<String>;
-  username_not_ends_with?: Maybe<String>;
-  reviews_every?: Maybe<ReviewWhereInput>;
-  reviews_some?: Maybe<ReviewWhereInput>;
-  reviews_none?: Maybe<ReviewWhereInput>;
+  name?: Maybe<String>;
+  name_not?: Maybe<String>;
+  name_in?: Maybe<String[] | String>;
+  name_not_in?: Maybe<String[] | String>;
+  name_lt?: Maybe<String>;
+  name_lte?: Maybe<String>;
+  name_gt?: Maybe<String>;
+  name_gte?: Maybe<String>;
+  name_contains?: Maybe<String>;
+  name_not_contains?: Maybe<String>;
+  name_starts_with?: Maybe<String>;
+  name_not_starts_with?: Maybe<String>;
+  name_ends_with?: Maybe<String>;
+  name_not_ends_with?: Maybe<String>;
+  email?: Maybe<String>;
+  email_not?: Maybe<String>;
+  email_in?: Maybe<String[] | String>;
+  email_not_in?: Maybe<String[] | String>;
+  email_lt?: Maybe<String>;
+  email_lte?: Maybe<String>;
+  email_gt?: Maybe<String>;
+  email_gte?: Maybe<String>;
+  email_contains?: Maybe<String>;
+  email_not_contains?: Maybe<String>;
+  email_starts_with?: Maybe<String>;
+  email_not_starts_with?: Maybe<String>;
+  email_ends_with?: Maybe<String>;
+  email_not_ends_with?: Maybe<String>;
+  posts_every?: Maybe<PostWhereInput>;
+  posts_some?: Maybe<PostWhereInput>;
+  posts_none?: Maybe<PostWhereInput>;
+  comments_every?: Maybe<CommentWhereInput>;
+  comments_some?: Maybe<CommentWhereInput>;
+  comments_none?: Maybe<CommentWhereInput>;
   AND?: Maybe<UserWhereInput[] | UserWhereInput>;
   OR?: Maybe<UserWhereInput[] | UserWhereInput>;
   NOT?: Maybe<UserWhereInput[] | UserWhereInput>;
 }
 
-export type ReviewWhereUniqueInput = AtLeastOne<{
+export interface CommentWhereInput {
+  id?: Maybe<ID_Input>;
+  id_not?: Maybe<ID_Input>;
+  id_in?: Maybe<ID_Input[] | ID_Input>;
+  id_not_in?: Maybe<ID_Input[] | ID_Input>;
+  id_lt?: Maybe<ID_Input>;
+  id_lte?: Maybe<ID_Input>;
+  id_gt?: Maybe<ID_Input>;
+  id_gte?: Maybe<ID_Input>;
+  id_contains?: Maybe<ID_Input>;
+  id_not_contains?: Maybe<ID_Input>;
+  id_starts_with?: Maybe<ID_Input>;
+  id_not_starts_with?: Maybe<ID_Input>;
+  id_ends_with?: Maybe<ID_Input>;
+  id_not_ends_with?: Maybe<ID_Input>;
+  text?: Maybe<String>;
+  text_not?: Maybe<String>;
+  text_in?: Maybe<String[] | String>;
+  text_not_in?: Maybe<String[] | String>;
+  text_lt?: Maybe<String>;
+  text_lte?: Maybe<String>;
+  text_gt?: Maybe<String>;
+  text_gte?: Maybe<String>;
+  text_contains?: Maybe<String>;
+  text_not_contains?: Maybe<String>;
+  text_starts_with?: Maybe<String>;
+  text_not_starts_with?: Maybe<String>;
+  text_ends_with?: Maybe<String>;
+  text_not_ends_with?: Maybe<String>;
+  author?: Maybe<UserWhereInput>;
+  post?: Maybe<PostWhereInput>;
+  AND?: Maybe<CommentWhereInput[] | CommentWhereInput>;
+  OR?: Maybe<CommentWhereInput[] | CommentWhereInput>;
+  NOT?: Maybe<CommentWhereInput[] | CommentWhereInput>;
+}
+
+export type PostWhereUniqueInput = AtLeastOne<{
   id: Maybe<ID_Input>;
 }>;
 
 export type UserWhereUniqueInput = AtLeastOne<{
   id: Maybe<ID_Input>;
-  username?: Maybe<String>;
+  email?: Maybe<String>;
 }>;
 
-export interface BookCreateInput {
+export interface CommentCreateInput {
+  id?: Maybe<ID_Input>;
+  text: String;
+  author: UserCreateOneWithoutCommentsInput;
+  post: PostCreateOneWithoutCommentsInput;
+}
+
+export interface UserCreateOneWithoutCommentsInput {
+  create?: Maybe<UserCreateWithoutCommentsInput>;
+  connect?: Maybe<UserWhereUniqueInput>;
+}
+
+export interface UserCreateWithoutCommentsInput {
+  id?: Maybe<ID_Input>;
+  name: String;
+  email: String;
+  posts?: Maybe<PostCreateManyWithoutAuthorInput>;
+}
+
+export interface PostCreateManyWithoutAuthorInput {
+  create?: Maybe<PostCreateWithoutAuthorInput[] | PostCreateWithoutAuthorInput>;
+  connect?: Maybe<PostWhereUniqueInput[] | PostWhereUniqueInput>;
+}
+
+export interface PostCreateWithoutAuthorInput {
   id?: Maybe<ID_Input>;
   title: String;
-  author: UserCreateOneInput;
-  isbn: String;
-  reviews?: Maybe<ReviewCreateManyWithoutBookInput>;
+  body: String;
+  published: Boolean;
+  comments?: Maybe<CommentCreateManyWithoutPostInput>;
 }
 
-export interface UserCreateOneInput {
-  create?: Maybe<UserCreateInput>;
-  connect?: Maybe<UserWhereUniqueInput>;
-}
-
-export interface UserCreateInput {
-  id?: Maybe<ID_Input>;
-  username: String;
-  reviews?: Maybe<ReviewCreateManyWithoutAuthorInput>;
-}
-
-export interface ReviewCreateManyWithoutAuthorInput {
+export interface CommentCreateManyWithoutPostInput {
   create?: Maybe<
-    ReviewCreateWithoutAuthorInput[] | ReviewCreateWithoutAuthorInput
+    CommentCreateWithoutPostInput[] | CommentCreateWithoutPostInput
   >;
-  connect?: Maybe<ReviewWhereUniqueInput[] | ReviewWhereUniqueInput>;
+  connect?: Maybe<CommentWhereUniqueInput[] | CommentWhereUniqueInput>;
 }
 
-export interface ReviewCreateWithoutAuthorInput {
+export interface CommentCreateWithoutPostInput {
   id?: Maybe<ID_Input>;
-  text?: Maybe<String>;
-  rating: Int;
-  book: BookCreateOneWithoutReviewsInput;
+  text: String;
+  author: UserCreateOneWithoutCommentsInput;
 }
 
-export interface BookCreateOneWithoutReviewsInput {
-  create?: Maybe<BookCreateWithoutReviewsInput>;
-  connect?: Maybe<BookWhereUniqueInput>;
+export interface PostCreateOneWithoutCommentsInput {
+  create?: Maybe<PostCreateWithoutCommentsInput>;
+  connect?: Maybe<PostWhereUniqueInput>;
 }
 
-export interface BookCreateWithoutReviewsInput {
+export interface PostCreateWithoutCommentsInput {
   id?: Maybe<ID_Input>;
   title: String;
-  author: UserCreateOneInput;
-  isbn: String;
+  body: String;
+  published: Boolean;
+  author: UserCreateOneWithoutPostsInput;
 }
 
-export interface ReviewCreateManyWithoutBookInput {
-  create?: Maybe<ReviewCreateWithoutBookInput[] | ReviewCreateWithoutBookInput>;
-  connect?: Maybe<ReviewWhereUniqueInput[] | ReviewWhereUniqueInput>;
-}
-
-export interface ReviewCreateWithoutBookInput {
-  id?: Maybe<ID_Input>;
-  text?: Maybe<String>;
-  rating: Int;
-  author: UserCreateOneWithoutReviewsInput;
-}
-
-export interface UserCreateOneWithoutReviewsInput {
-  create?: Maybe<UserCreateWithoutReviewsInput>;
+export interface UserCreateOneWithoutPostsInput {
+  create?: Maybe<UserCreateWithoutPostsInput>;
   connect?: Maybe<UserWhereUniqueInput>;
 }
 
-export interface UserCreateWithoutReviewsInput {
+export interface UserCreateWithoutPostsInput {
   id?: Maybe<ID_Input>;
-  username: String;
+  name: String;
+  email: String;
+  comments?: Maybe<CommentCreateManyWithoutAuthorInput>;
 }
 
-export interface BookUpdateInput {
-  title?: Maybe<String>;
-  author?: Maybe<UserUpdateOneRequiredInput>;
-  isbn?: Maybe<String>;
-  reviews?: Maybe<ReviewUpdateManyWithoutBookInput>;
-}
-
-export interface UserUpdateOneRequiredInput {
-  create?: Maybe<UserCreateInput>;
-  update?: Maybe<UserUpdateDataInput>;
-  upsert?: Maybe<UserUpsertNestedInput>;
-  connect?: Maybe<UserWhereUniqueInput>;
-}
-
-export interface UserUpdateDataInput {
-  username?: Maybe<String>;
-  reviews?: Maybe<ReviewUpdateManyWithoutAuthorInput>;
-}
-
-export interface ReviewUpdateManyWithoutAuthorInput {
+export interface CommentCreateManyWithoutAuthorInput {
   create?: Maybe<
-    ReviewCreateWithoutAuthorInput[] | ReviewCreateWithoutAuthorInput
+    CommentCreateWithoutAuthorInput[] | CommentCreateWithoutAuthorInput
   >;
-  delete?: Maybe<ReviewWhereUniqueInput[] | ReviewWhereUniqueInput>;
-  connect?: Maybe<ReviewWhereUniqueInput[] | ReviewWhereUniqueInput>;
-  set?: Maybe<ReviewWhereUniqueInput[] | ReviewWhereUniqueInput>;
-  disconnect?: Maybe<ReviewWhereUniqueInput[] | ReviewWhereUniqueInput>;
+  connect?: Maybe<CommentWhereUniqueInput[] | CommentWhereUniqueInput>;
+}
+
+export interface CommentCreateWithoutAuthorInput {
+  id?: Maybe<ID_Input>;
+  text: String;
+  post: PostCreateOneWithoutCommentsInput;
+}
+
+export interface CommentUpdateInput {
+  text?: Maybe<String>;
+  author?: Maybe<UserUpdateOneRequiredWithoutCommentsInput>;
+  post?: Maybe<PostUpdateOneRequiredWithoutCommentsInput>;
+}
+
+export interface UserUpdateOneRequiredWithoutCommentsInput {
+  create?: Maybe<UserCreateWithoutCommentsInput>;
+  update?: Maybe<UserUpdateWithoutCommentsDataInput>;
+  upsert?: Maybe<UserUpsertWithoutCommentsInput>;
+  connect?: Maybe<UserWhereUniqueInput>;
+}
+
+export interface UserUpdateWithoutCommentsDataInput {
+  name?: Maybe<String>;
+  email?: Maybe<String>;
+  posts?: Maybe<PostUpdateManyWithoutAuthorInput>;
+}
+
+export interface PostUpdateManyWithoutAuthorInput {
+  create?: Maybe<PostCreateWithoutAuthorInput[] | PostCreateWithoutAuthorInput>;
+  delete?: Maybe<PostWhereUniqueInput[] | PostWhereUniqueInput>;
+  connect?: Maybe<PostWhereUniqueInput[] | PostWhereUniqueInput>;
+  set?: Maybe<PostWhereUniqueInput[] | PostWhereUniqueInput>;
+  disconnect?: Maybe<PostWhereUniqueInput[] | PostWhereUniqueInput>;
   update?: Maybe<
-    | ReviewUpdateWithWhereUniqueWithoutAuthorInput[]
-    | ReviewUpdateWithWhereUniqueWithoutAuthorInput
+    | PostUpdateWithWhereUniqueWithoutAuthorInput[]
+    | PostUpdateWithWhereUniqueWithoutAuthorInput
   >;
   upsert?: Maybe<
-    | ReviewUpsertWithWhereUniqueWithoutAuthorInput[]
-    | ReviewUpsertWithWhereUniqueWithoutAuthorInput
+    | PostUpsertWithWhereUniqueWithoutAuthorInput[]
+    | PostUpsertWithWhereUniqueWithoutAuthorInput
   >;
-  deleteMany?: Maybe<ReviewScalarWhereInput[] | ReviewScalarWhereInput>;
+  deleteMany?: Maybe<PostScalarWhereInput[] | PostScalarWhereInput>;
   updateMany?: Maybe<
-    | ReviewUpdateManyWithWhereNestedInput[]
-    | ReviewUpdateManyWithWhereNestedInput
+    PostUpdateManyWithWhereNestedInput[] | PostUpdateManyWithWhereNestedInput
   >;
 }
 
-export interface ReviewUpdateWithWhereUniqueWithoutAuthorInput {
-  where: ReviewWhereUniqueInput;
-  data: ReviewUpdateWithoutAuthorDataInput;
+export interface PostUpdateWithWhereUniqueWithoutAuthorInput {
+  where: PostWhereUniqueInput;
+  data: PostUpdateWithoutAuthorDataInput;
 }
 
-export interface ReviewUpdateWithoutAuthorDataInput {
-  text?: Maybe<String>;
-  rating?: Maybe<Int>;
-  book?: Maybe<BookUpdateOneRequiredWithoutReviewsInput>;
-}
-
-export interface BookUpdateOneRequiredWithoutReviewsInput {
-  create?: Maybe<BookCreateWithoutReviewsInput>;
-  update?: Maybe<BookUpdateWithoutReviewsDataInput>;
-  upsert?: Maybe<BookUpsertWithoutReviewsInput>;
-  connect?: Maybe<BookWhereUniqueInput>;
-}
-
-export interface BookUpdateWithoutReviewsDataInput {
+export interface PostUpdateWithoutAuthorDataInput {
   title?: Maybe<String>;
-  author?: Maybe<UserUpdateOneRequiredInput>;
-  isbn?: Maybe<String>;
+  body?: Maybe<String>;
+  published?: Maybe<Boolean>;
+  comments?: Maybe<CommentUpdateManyWithoutPostInput>;
 }
 
-export interface BookUpsertWithoutReviewsInput {
-  update: BookUpdateWithoutReviewsDataInput;
-  create: BookCreateWithoutReviewsInput;
+export interface CommentUpdateManyWithoutPostInput {
+  create?: Maybe<
+    CommentCreateWithoutPostInput[] | CommentCreateWithoutPostInput
+  >;
+  delete?: Maybe<CommentWhereUniqueInput[] | CommentWhereUniqueInput>;
+  connect?: Maybe<CommentWhereUniqueInput[] | CommentWhereUniqueInput>;
+  set?: Maybe<CommentWhereUniqueInput[] | CommentWhereUniqueInput>;
+  disconnect?: Maybe<CommentWhereUniqueInput[] | CommentWhereUniqueInput>;
+  update?: Maybe<
+    | CommentUpdateWithWhereUniqueWithoutPostInput[]
+    | CommentUpdateWithWhereUniqueWithoutPostInput
+  >;
+  upsert?: Maybe<
+    | CommentUpsertWithWhereUniqueWithoutPostInput[]
+    | CommentUpsertWithWhereUniqueWithoutPostInput
+  >;
+  deleteMany?: Maybe<CommentScalarWhereInput[] | CommentScalarWhereInput>;
+  updateMany?: Maybe<
+    | CommentUpdateManyWithWhereNestedInput[]
+    | CommentUpdateManyWithWhereNestedInput
+  >;
 }
 
-export interface ReviewUpsertWithWhereUniqueWithoutAuthorInput {
-  where: ReviewWhereUniqueInput;
-  update: ReviewUpdateWithoutAuthorDataInput;
-  create: ReviewCreateWithoutAuthorInput;
+export interface CommentUpdateWithWhereUniqueWithoutPostInput {
+  where: CommentWhereUniqueInput;
+  data: CommentUpdateWithoutPostDataInput;
 }
 
-export interface ReviewScalarWhereInput {
+export interface CommentUpdateWithoutPostDataInput {
+  text?: Maybe<String>;
+  author?: Maybe<UserUpdateOneRequiredWithoutCommentsInput>;
+}
+
+export interface CommentUpsertWithWhereUniqueWithoutPostInput {
+  where: CommentWhereUniqueInput;
+  update: CommentUpdateWithoutPostDataInput;
+  create: CommentCreateWithoutPostInput;
+}
+
+export interface CommentScalarWhereInput {
+  id?: Maybe<ID_Input>;
+  id_not?: Maybe<ID_Input>;
+  id_in?: Maybe<ID_Input[] | ID_Input>;
+  id_not_in?: Maybe<ID_Input[] | ID_Input>;
+  id_lt?: Maybe<ID_Input>;
+  id_lte?: Maybe<ID_Input>;
+  id_gt?: Maybe<ID_Input>;
+  id_gte?: Maybe<ID_Input>;
+  id_contains?: Maybe<ID_Input>;
+  id_not_contains?: Maybe<ID_Input>;
+  id_starts_with?: Maybe<ID_Input>;
+  id_not_starts_with?: Maybe<ID_Input>;
+  id_ends_with?: Maybe<ID_Input>;
+  id_not_ends_with?: Maybe<ID_Input>;
+  text?: Maybe<String>;
+  text_not?: Maybe<String>;
+  text_in?: Maybe<String[] | String>;
+  text_not_in?: Maybe<String[] | String>;
+  text_lt?: Maybe<String>;
+  text_lte?: Maybe<String>;
+  text_gt?: Maybe<String>;
+  text_gte?: Maybe<String>;
+  text_contains?: Maybe<String>;
+  text_not_contains?: Maybe<String>;
+  text_starts_with?: Maybe<String>;
+  text_not_starts_with?: Maybe<String>;
+  text_ends_with?: Maybe<String>;
+  text_not_ends_with?: Maybe<String>;
+  AND?: Maybe<CommentScalarWhereInput[] | CommentScalarWhereInput>;
+  OR?: Maybe<CommentScalarWhereInput[] | CommentScalarWhereInput>;
+  NOT?: Maybe<CommentScalarWhereInput[] | CommentScalarWhereInput>;
+}
+
+export interface CommentUpdateManyWithWhereNestedInput {
+  where: CommentScalarWhereInput;
+  data: CommentUpdateManyDataInput;
+}
+
+export interface CommentUpdateManyDataInput {
+  text?: Maybe<String>;
+}
+
+export interface PostUpsertWithWhereUniqueWithoutAuthorInput {
+  where: PostWhereUniqueInput;
+  update: PostUpdateWithoutAuthorDataInput;
+  create: PostCreateWithoutAuthorInput;
+}
+
+export interface PostScalarWhereInput {
   id?: Maybe<ID_Input>;
   id_not?: Maybe<ID_Input>;
   id_in?: Maybe<ID_Input[] | ID_Input>;
@@ -584,156 +655,200 @@ export interface ReviewScalarWhereInput {
   updatedAt_lte?: Maybe<DateTimeInput>;
   updatedAt_gt?: Maybe<DateTimeInput>;
   updatedAt_gte?: Maybe<DateTimeInput>;
-  text?: Maybe<String>;
-  text_not?: Maybe<String>;
-  text_in?: Maybe<String[] | String>;
-  text_not_in?: Maybe<String[] | String>;
-  text_lt?: Maybe<String>;
-  text_lte?: Maybe<String>;
-  text_gt?: Maybe<String>;
-  text_gte?: Maybe<String>;
-  text_contains?: Maybe<String>;
-  text_not_contains?: Maybe<String>;
-  text_starts_with?: Maybe<String>;
-  text_not_starts_with?: Maybe<String>;
-  text_ends_with?: Maybe<String>;
-  text_not_ends_with?: Maybe<String>;
-  rating?: Maybe<Int>;
-  rating_not?: Maybe<Int>;
-  rating_in?: Maybe<Int[] | Int>;
-  rating_not_in?: Maybe<Int[] | Int>;
-  rating_lt?: Maybe<Int>;
-  rating_lte?: Maybe<Int>;
-  rating_gt?: Maybe<Int>;
-  rating_gte?: Maybe<Int>;
-  AND?: Maybe<ReviewScalarWhereInput[] | ReviewScalarWhereInput>;
-  OR?: Maybe<ReviewScalarWhereInput[] | ReviewScalarWhereInput>;
-  NOT?: Maybe<ReviewScalarWhereInput[] | ReviewScalarWhereInput>;
+  title?: Maybe<String>;
+  title_not?: Maybe<String>;
+  title_in?: Maybe<String[] | String>;
+  title_not_in?: Maybe<String[] | String>;
+  title_lt?: Maybe<String>;
+  title_lte?: Maybe<String>;
+  title_gt?: Maybe<String>;
+  title_gte?: Maybe<String>;
+  title_contains?: Maybe<String>;
+  title_not_contains?: Maybe<String>;
+  title_starts_with?: Maybe<String>;
+  title_not_starts_with?: Maybe<String>;
+  title_ends_with?: Maybe<String>;
+  title_not_ends_with?: Maybe<String>;
+  body?: Maybe<String>;
+  body_not?: Maybe<String>;
+  body_in?: Maybe<String[] | String>;
+  body_not_in?: Maybe<String[] | String>;
+  body_lt?: Maybe<String>;
+  body_lte?: Maybe<String>;
+  body_gt?: Maybe<String>;
+  body_gte?: Maybe<String>;
+  body_contains?: Maybe<String>;
+  body_not_contains?: Maybe<String>;
+  body_starts_with?: Maybe<String>;
+  body_not_starts_with?: Maybe<String>;
+  body_ends_with?: Maybe<String>;
+  body_not_ends_with?: Maybe<String>;
+  published?: Maybe<Boolean>;
+  published_not?: Maybe<Boolean>;
+  AND?: Maybe<PostScalarWhereInput[] | PostScalarWhereInput>;
+  OR?: Maybe<PostScalarWhereInput[] | PostScalarWhereInput>;
+  NOT?: Maybe<PostScalarWhereInput[] | PostScalarWhereInput>;
 }
 
-export interface ReviewUpdateManyWithWhereNestedInput {
-  where: ReviewScalarWhereInput;
-  data: ReviewUpdateManyDataInput;
+export interface PostUpdateManyWithWhereNestedInput {
+  where: PostScalarWhereInput;
+  data: PostUpdateManyDataInput;
 }
 
-export interface ReviewUpdateManyDataInput {
-  text?: Maybe<String>;
-  rating?: Maybe<Int>;
+export interface PostUpdateManyDataInput {
+  title?: Maybe<String>;
+  body?: Maybe<String>;
+  published?: Maybe<Boolean>;
 }
 
-export interface UserUpsertNestedInput {
-  update: UserUpdateDataInput;
-  create: UserCreateInput;
+export interface UserUpsertWithoutCommentsInput {
+  update: UserUpdateWithoutCommentsDataInput;
+  create: UserCreateWithoutCommentsInput;
 }
 
-export interface ReviewUpdateManyWithoutBookInput {
-  create?: Maybe<ReviewCreateWithoutBookInput[] | ReviewCreateWithoutBookInput>;
-  delete?: Maybe<ReviewWhereUniqueInput[] | ReviewWhereUniqueInput>;
-  connect?: Maybe<ReviewWhereUniqueInput[] | ReviewWhereUniqueInput>;
-  set?: Maybe<ReviewWhereUniqueInput[] | ReviewWhereUniqueInput>;
-  disconnect?: Maybe<ReviewWhereUniqueInput[] | ReviewWhereUniqueInput>;
-  update?: Maybe<
-    | ReviewUpdateWithWhereUniqueWithoutBookInput[]
-    | ReviewUpdateWithWhereUniqueWithoutBookInput
-  >;
-  upsert?: Maybe<
-    | ReviewUpsertWithWhereUniqueWithoutBookInput[]
-    | ReviewUpsertWithWhereUniqueWithoutBookInput
-  >;
-  deleteMany?: Maybe<ReviewScalarWhereInput[] | ReviewScalarWhereInput>;
-  updateMany?: Maybe<
-    | ReviewUpdateManyWithWhereNestedInput[]
-    | ReviewUpdateManyWithWhereNestedInput
-  >;
+export interface PostUpdateOneRequiredWithoutCommentsInput {
+  create?: Maybe<PostCreateWithoutCommentsInput>;
+  update?: Maybe<PostUpdateWithoutCommentsDataInput>;
+  upsert?: Maybe<PostUpsertWithoutCommentsInput>;
+  connect?: Maybe<PostWhereUniqueInput>;
 }
 
-export interface ReviewUpdateWithWhereUniqueWithoutBookInput {
-  where: ReviewWhereUniqueInput;
-  data: ReviewUpdateWithoutBookDataInput;
+export interface PostUpdateWithoutCommentsDataInput {
+  title?: Maybe<String>;
+  body?: Maybe<String>;
+  published?: Maybe<Boolean>;
+  author?: Maybe<UserUpdateOneRequiredWithoutPostsInput>;
 }
 
-export interface ReviewUpdateWithoutBookDataInput {
-  text?: Maybe<String>;
-  rating?: Maybe<Int>;
-  author?: Maybe<UserUpdateOneRequiredWithoutReviewsInput>;
-}
-
-export interface UserUpdateOneRequiredWithoutReviewsInput {
-  create?: Maybe<UserCreateWithoutReviewsInput>;
-  update?: Maybe<UserUpdateWithoutReviewsDataInput>;
-  upsert?: Maybe<UserUpsertWithoutReviewsInput>;
+export interface UserUpdateOneRequiredWithoutPostsInput {
+  create?: Maybe<UserCreateWithoutPostsInput>;
+  update?: Maybe<UserUpdateWithoutPostsDataInput>;
+  upsert?: Maybe<UserUpsertWithoutPostsInput>;
   connect?: Maybe<UserWhereUniqueInput>;
 }
 
-export interface UserUpdateWithoutReviewsDataInput {
-  username?: Maybe<String>;
+export interface UserUpdateWithoutPostsDataInput {
+  name?: Maybe<String>;
+  email?: Maybe<String>;
+  comments?: Maybe<CommentUpdateManyWithoutAuthorInput>;
 }
 
-export interface UserUpsertWithoutReviewsInput {
-  update: UserUpdateWithoutReviewsDataInput;
-  create: UserCreateWithoutReviewsInput;
+export interface CommentUpdateManyWithoutAuthorInput {
+  create?: Maybe<
+    CommentCreateWithoutAuthorInput[] | CommentCreateWithoutAuthorInput
+  >;
+  delete?: Maybe<CommentWhereUniqueInput[] | CommentWhereUniqueInput>;
+  connect?: Maybe<CommentWhereUniqueInput[] | CommentWhereUniqueInput>;
+  set?: Maybe<CommentWhereUniqueInput[] | CommentWhereUniqueInput>;
+  disconnect?: Maybe<CommentWhereUniqueInput[] | CommentWhereUniqueInput>;
+  update?: Maybe<
+    | CommentUpdateWithWhereUniqueWithoutAuthorInput[]
+    | CommentUpdateWithWhereUniqueWithoutAuthorInput
+  >;
+  upsert?: Maybe<
+    | CommentUpsertWithWhereUniqueWithoutAuthorInput[]
+    | CommentUpsertWithWhereUniqueWithoutAuthorInput
+  >;
+  deleteMany?: Maybe<CommentScalarWhereInput[] | CommentScalarWhereInput>;
+  updateMany?: Maybe<
+    | CommentUpdateManyWithWhereNestedInput[]
+    | CommentUpdateManyWithWhereNestedInput
+  >;
 }
 
-export interface ReviewUpsertWithWhereUniqueWithoutBookInput {
-  where: ReviewWhereUniqueInput;
-  update: ReviewUpdateWithoutBookDataInput;
-  create: ReviewCreateWithoutBookInput;
+export interface CommentUpdateWithWhereUniqueWithoutAuthorInput {
+  where: CommentWhereUniqueInput;
+  data: CommentUpdateWithoutAuthorDataInput;
 }
 
-export interface BookUpdateManyMutationInput {
-  title?: Maybe<String>;
-  isbn?: Maybe<String>;
+export interface CommentUpdateWithoutAuthorDataInput {
+  text?: Maybe<String>;
+  post?: Maybe<PostUpdateOneRequiredWithoutCommentsInput>;
 }
 
-export interface ReviewCreateInput {
+export interface CommentUpsertWithWhereUniqueWithoutAuthorInput {
+  where: CommentWhereUniqueInput;
+  update: CommentUpdateWithoutAuthorDataInput;
+  create: CommentCreateWithoutAuthorInput;
+}
+
+export interface UserUpsertWithoutPostsInput {
+  update: UserUpdateWithoutPostsDataInput;
+  create: UserCreateWithoutPostsInput;
+}
+
+export interface PostUpsertWithoutCommentsInput {
+  update: PostUpdateWithoutCommentsDataInput;
+  create: PostCreateWithoutCommentsInput;
+}
+
+export interface CommentUpdateManyMutationInput {
+  text?: Maybe<String>;
+}
+
+export interface PostCreateInput {
   id?: Maybe<ID_Input>;
-  text?: Maybe<String>;
-  rating: Int;
-  book: BookCreateOneWithoutReviewsInput;
-  author: UserCreateOneWithoutReviewsInput;
+  title: String;
+  body: String;
+  published: Boolean;
+  author: UserCreateOneWithoutPostsInput;
+  comments?: Maybe<CommentCreateManyWithoutPostInput>;
 }
 
-export interface ReviewUpdateInput {
-  text?: Maybe<String>;
-  rating?: Maybe<Int>;
-  book?: Maybe<BookUpdateOneRequiredWithoutReviewsInput>;
-  author?: Maybe<UserUpdateOneRequiredWithoutReviewsInput>;
+export interface PostUpdateInput {
+  title?: Maybe<String>;
+  body?: Maybe<String>;
+  published?: Maybe<Boolean>;
+  author?: Maybe<UserUpdateOneRequiredWithoutPostsInput>;
+  comments?: Maybe<CommentUpdateManyWithoutPostInput>;
 }
 
-export interface ReviewUpdateManyMutationInput {
-  text?: Maybe<String>;
-  rating?: Maybe<Int>;
+export interface PostUpdateManyMutationInput {
+  title?: Maybe<String>;
+  body?: Maybe<String>;
+  published?: Maybe<Boolean>;
+}
+
+export interface UserCreateInput {
+  id?: Maybe<ID_Input>;
+  name: String;
+  email: String;
+  posts?: Maybe<PostCreateManyWithoutAuthorInput>;
+  comments?: Maybe<CommentCreateManyWithoutAuthorInput>;
 }
 
 export interface UserUpdateInput {
-  username?: Maybe<String>;
-  reviews?: Maybe<ReviewUpdateManyWithoutAuthorInput>;
+  name?: Maybe<String>;
+  email?: Maybe<String>;
+  posts?: Maybe<PostUpdateManyWithoutAuthorInput>;
+  comments?: Maybe<CommentUpdateManyWithoutAuthorInput>;
 }
 
 export interface UserUpdateManyMutationInput {
-  username?: Maybe<String>;
+  name?: Maybe<String>;
+  email?: Maybe<String>;
 }
 
-export interface BookSubscriptionWhereInput {
+export interface CommentSubscriptionWhereInput {
   mutation_in?: Maybe<MutationType[] | MutationType>;
   updatedFields_contains?: Maybe<String>;
   updatedFields_contains_every?: Maybe<String[] | String>;
   updatedFields_contains_some?: Maybe<String[] | String>;
-  node?: Maybe<BookWhereInput>;
-  AND?: Maybe<BookSubscriptionWhereInput[] | BookSubscriptionWhereInput>;
-  OR?: Maybe<BookSubscriptionWhereInput[] | BookSubscriptionWhereInput>;
-  NOT?: Maybe<BookSubscriptionWhereInput[] | BookSubscriptionWhereInput>;
+  node?: Maybe<CommentWhereInput>;
+  AND?: Maybe<CommentSubscriptionWhereInput[] | CommentSubscriptionWhereInput>;
+  OR?: Maybe<CommentSubscriptionWhereInput[] | CommentSubscriptionWhereInput>;
+  NOT?: Maybe<CommentSubscriptionWhereInput[] | CommentSubscriptionWhereInput>;
 }
 
-export interface ReviewSubscriptionWhereInput {
+export interface PostSubscriptionWhereInput {
   mutation_in?: Maybe<MutationType[] | MutationType>;
   updatedFields_contains?: Maybe<String>;
   updatedFields_contains_every?: Maybe<String[] | String>;
   updatedFields_contains_some?: Maybe<String[] | String>;
-  node?: Maybe<ReviewWhereInput>;
-  AND?: Maybe<ReviewSubscriptionWhereInput[] | ReviewSubscriptionWhereInput>;
-  OR?: Maybe<ReviewSubscriptionWhereInput[] | ReviewSubscriptionWhereInput>;
-  NOT?: Maybe<ReviewSubscriptionWhereInput[] | ReviewSubscriptionWhereInput>;
+  node?: Maybe<PostWhereInput>;
+  AND?: Maybe<PostSubscriptionWhereInput[] | PostSubscriptionWhereInput>;
+  OR?: Maybe<PostSubscriptionWhereInput[] | PostSubscriptionWhereInput>;
+  NOT?: Maybe<PostSubscriptionWhereInput[] | PostSubscriptionWhereInput>;
 }
 
 export interface UserSubscriptionWhereInput {
@@ -751,87 +866,62 @@ export interface NodeNode {
   id: ID_Output;
 }
 
-export interface Book {
+export interface Comment {
   id: ID_Output;
-  createdAt: DateTimeOutput;
-  updatedAt: DateTimeOutput;
-  title: String;
-  isbn: String;
+  text: String;
 }
 
-export interface BookPromise extends Promise<Book>, Fragmentable {
+export interface CommentPromise extends Promise<Comment>, Fragmentable {
   id: () => Promise<ID_Output>;
-  createdAt: () => Promise<DateTimeOutput>;
-  updatedAt: () => Promise<DateTimeOutput>;
-  title: () => Promise<String>;
+  text: () => Promise<String>;
   author: <T = UserPromise>() => T;
-  isbn: () => Promise<String>;
-  reviews: <T = FragmentableArray<Review>>(args?: {
-    where?: ReviewWhereInput;
-    orderBy?: ReviewOrderByInput;
-    skip?: Int;
-    after?: String;
-    before?: String;
-    first?: Int;
-    last?: Int;
-  }) => T;
+  post: <T = PostPromise>() => T;
 }
 
-export interface BookSubscription
-  extends Promise<AsyncIterator<Book>>,
+export interface CommentSubscription
+  extends Promise<AsyncIterator<Comment>>,
     Fragmentable {
   id: () => Promise<AsyncIterator<ID_Output>>;
-  createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
-  updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
-  title: () => Promise<AsyncIterator<String>>;
+  text: () => Promise<AsyncIterator<String>>;
   author: <T = UserSubscription>() => T;
-  isbn: () => Promise<AsyncIterator<String>>;
-  reviews: <T = Promise<AsyncIterator<ReviewSubscription>>>(args?: {
-    where?: ReviewWhereInput;
-    orderBy?: ReviewOrderByInput;
-    skip?: Int;
-    after?: String;
-    before?: String;
-    first?: Int;
-    last?: Int;
-  }) => T;
+  post: <T = PostSubscription>() => T;
 }
 
-export interface BookNullablePromise
-  extends Promise<Book | null>,
+export interface CommentNullablePromise
+  extends Promise<Comment | null>,
     Fragmentable {
   id: () => Promise<ID_Output>;
-  createdAt: () => Promise<DateTimeOutput>;
-  updatedAt: () => Promise<DateTimeOutput>;
-  title: () => Promise<String>;
+  text: () => Promise<String>;
   author: <T = UserPromise>() => T;
-  isbn: () => Promise<String>;
-  reviews: <T = FragmentableArray<Review>>(args?: {
-    where?: ReviewWhereInput;
-    orderBy?: ReviewOrderByInput;
-    skip?: Int;
-    after?: String;
-    before?: String;
-    first?: Int;
-    last?: Int;
-  }) => T;
+  post: <T = PostPromise>() => T;
 }
 
 export interface User {
   id: ID_Output;
   createdAt: DateTimeOutput;
   updatedAt: DateTimeOutput;
-  username: String;
+  name: String;
+  email: String;
 }
 
 export interface UserPromise extends Promise<User>, Fragmentable {
   id: () => Promise<ID_Output>;
   createdAt: () => Promise<DateTimeOutput>;
   updatedAt: () => Promise<DateTimeOutput>;
-  username: () => Promise<String>;
-  reviews: <T = FragmentableArray<Review>>(args?: {
-    where?: ReviewWhereInput;
-    orderBy?: ReviewOrderByInput;
+  name: () => Promise<String>;
+  email: () => Promise<String>;
+  posts: <T = FragmentableArray<Post>>(args?: {
+    where?: PostWhereInput;
+    orderBy?: PostOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+  comments: <T = FragmentableArray<Comment>>(args?: {
+    where?: CommentWhereInput;
+    orderBy?: CommentOrderByInput;
     skip?: Int;
     after?: String;
     before?: String;
@@ -846,10 +936,20 @@ export interface UserSubscription
   id: () => Promise<AsyncIterator<ID_Output>>;
   createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
   updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
-  username: () => Promise<AsyncIterator<String>>;
-  reviews: <T = Promise<AsyncIterator<ReviewSubscription>>>(args?: {
-    where?: ReviewWhereInput;
-    orderBy?: ReviewOrderByInput;
+  name: () => Promise<AsyncIterator<String>>;
+  email: () => Promise<AsyncIterator<String>>;
+  posts: <T = Promise<AsyncIterator<PostSubscription>>>(args?: {
+    where?: PostWhereInput;
+    orderBy?: PostOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+  comments: <T = Promise<AsyncIterator<CommentSubscription>>>(args?: {
+    where?: CommentWhereInput;
+    orderBy?: CommentOrderByInput;
     skip?: Int;
     after?: String;
     before?: String;
@@ -864,10 +964,20 @@ export interface UserNullablePromise
   id: () => Promise<ID_Output>;
   createdAt: () => Promise<DateTimeOutput>;
   updatedAt: () => Promise<DateTimeOutput>;
-  username: () => Promise<String>;
-  reviews: <T = FragmentableArray<Review>>(args?: {
-    where?: ReviewWhereInput;
-    orderBy?: ReviewOrderByInput;
+  name: () => Promise<String>;
+  email: () => Promise<String>;
+  posts: <T = FragmentableArray<Post>>(args?: {
+    where?: PostWhereInput;
+    orderBy?: PostOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+  comments: <T = FragmentableArray<Comment>>(args?: {
+    where?: CommentWhereInput;
+    orderBy?: CommentOrderByInput;
     skip?: Int;
     after?: String;
     before?: String;
@@ -876,67 +986,95 @@ export interface UserNullablePromise
   }) => T;
 }
 
-export interface Review {
+export interface Post {
   id: ID_Output;
   createdAt: DateTimeOutput;
   updatedAt: DateTimeOutput;
-  text?: String;
-  rating: Int;
+  title: String;
+  body: String;
+  published: Boolean;
 }
 
-export interface ReviewPromise extends Promise<Review>, Fragmentable {
+export interface PostPromise extends Promise<Post>, Fragmentable {
   id: () => Promise<ID_Output>;
   createdAt: () => Promise<DateTimeOutput>;
   updatedAt: () => Promise<DateTimeOutput>;
-  text: () => Promise<String>;
-  rating: () => Promise<Int>;
-  book: <T = BookPromise>() => T;
+  title: () => Promise<String>;
+  body: () => Promise<String>;
+  published: () => Promise<Boolean>;
   author: <T = UserPromise>() => T;
+  comments: <T = FragmentableArray<Comment>>(args?: {
+    where?: CommentWhereInput;
+    orderBy?: CommentOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
 }
 
-export interface ReviewSubscription
-  extends Promise<AsyncIterator<Review>>,
+export interface PostSubscription
+  extends Promise<AsyncIterator<Post>>,
     Fragmentable {
   id: () => Promise<AsyncIterator<ID_Output>>;
   createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
   updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
-  text: () => Promise<AsyncIterator<String>>;
-  rating: () => Promise<AsyncIterator<Int>>;
-  book: <T = BookSubscription>() => T;
+  title: () => Promise<AsyncIterator<String>>;
+  body: () => Promise<AsyncIterator<String>>;
+  published: () => Promise<AsyncIterator<Boolean>>;
   author: <T = UserSubscription>() => T;
+  comments: <T = Promise<AsyncIterator<CommentSubscription>>>(args?: {
+    where?: CommentWhereInput;
+    orderBy?: CommentOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
 }
 
-export interface ReviewNullablePromise
-  extends Promise<Review | null>,
+export interface PostNullablePromise
+  extends Promise<Post | null>,
     Fragmentable {
   id: () => Promise<ID_Output>;
   createdAt: () => Promise<DateTimeOutput>;
   updatedAt: () => Promise<DateTimeOutput>;
-  text: () => Promise<String>;
-  rating: () => Promise<Int>;
-  book: <T = BookPromise>() => T;
+  title: () => Promise<String>;
+  body: () => Promise<String>;
+  published: () => Promise<Boolean>;
   author: <T = UserPromise>() => T;
+  comments: <T = FragmentableArray<Comment>>(args?: {
+    where?: CommentWhereInput;
+    orderBy?: CommentOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
 }
 
-export interface BookConnection {
+export interface CommentConnection {
   pageInfo: PageInfo;
-  edges: BookEdge[];
+  edges: CommentEdge[];
 }
 
-export interface BookConnectionPromise
-  extends Promise<BookConnection>,
+export interface CommentConnectionPromise
+  extends Promise<CommentConnection>,
     Fragmentable {
   pageInfo: <T = PageInfoPromise>() => T;
-  edges: <T = FragmentableArray<BookEdge>>() => T;
-  aggregate: <T = AggregateBookPromise>() => T;
+  edges: <T = FragmentableArray<CommentEdge>>() => T;
+  aggregate: <T = AggregateCommentPromise>() => T;
 }
 
-export interface BookConnectionSubscription
-  extends Promise<AsyncIterator<BookConnection>>,
+export interface CommentConnectionSubscription
+  extends Promise<AsyncIterator<CommentConnection>>,
     Fragmentable {
   pageInfo: <T = PageInfoSubscription>() => T;
-  edges: <T = Promise<AsyncIterator<BookEdgeSubscription>>>() => T;
-  aggregate: <T = AggregateBookSubscription>() => T;
+  edges: <T = Promise<AsyncIterator<CommentEdgeSubscription>>>() => T;
+  aggregate: <T = AggregateCommentSubscription>() => T;
 }
 
 export interface PageInfo {
@@ -962,89 +1100,89 @@ export interface PageInfoSubscription
   endCursor: () => Promise<AsyncIterator<String>>;
 }
 
-export interface BookEdge {
-  node: Book;
+export interface CommentEdge {
+  node: Comment;
   cursor: String;
 }
 
-export interface BookEdgePromise extends Promise<BookEdge>, Fragmentable {
-  node: <T = BookPromise>() => T;
+export interface CommentEdgePromise extends Promise<CommentEdge>, Fragmentable {
+  node: <T = CommentPromise>() => T;
   cursor: () => Promise<String>;
 }
 
-export interface BookEdgeSubscription
-  extends Promise<AsyncIterator<BookEdge>>,
+export interface CommentEdgeSubscription
+  extends Promise<AsyncIterator<CommentEdge>>,
     Fragmentable {
-  node: <T = BookSubscription>() => T;
+  node: <T = CommentSubscription>() => T;
   cursor: () => Promise<AsyncIterator<String>>;
 }
 
-export interface AggregateBook {
+export interface AggregateComment {
   count: Int;
 }
 
-export interface AggregateBookPromise
-  extends Promise<AggregateBook>,
+export interface AggregateCommentPromise
+  extends Promise<AggregateComment>,
     Fragmentable {
   count: () => Promise<Int>;
 }
 
-export interface AggregateBookSubscription
-  extends Promise<AsyncIterator<AggregateBook>>,
+export interface AggregateCommentSubscription
+  extends Promise<AsyncIterator<AggregateComment>>,
     Fragmentable {
   count: () => Promise<AsyncIterator<Int>>;
 }
 
-export interface ReviewConnection {
+export interface PostConnection {
   pageInfo: PageInfo;
-  edges: ReviewEdge[];
+  edges: PostEdge[];
 }
 
-export interface ReviewConnectionPromise
-  extends Promise<ReviewConnection>,
+export interface PostConnectionPromise
+  extends Promise<PostConnection>,
     Fragmentable {
   pageInfo: <T = PageInfoPromise>() => T;
-  edges: <T = FragmentableArray<ReviewEdge>>() => T;
-  aggregate: <T = AggregateReviewPromise>() => T;
+  edges: <T = FragmentableArray<PostEdge>>() => T;
+  aggregate: <T = AggregatePostPromise>() => T;
 }
 
-export interface ReviewConnectionSubscription
-  extends Promise<AsyncIterator<ReviewConnection>>,
+export interface PostConnectionSubscription
+  extends Promise<AsyncIterator<PostConnection>>,
     Fragmentable {
   pageInfo: <T = PageInfoSubscription>() => T;
-  edges: <T = Promise<AsyncIterator<ReviewEdgeSubscription>>>() => T;
-  aggregate: <T = AggregateReviewSubscription>() => T;
+  edges: <T = Promise<AsyncIterator<PostEdgeSubscription>>>() => T;
+  aggregate: <T = AggregatePostSubscription>() => T;
 }
 
-export interface ReviewEdge {
-  node: Review;
+export interface PostEdge {
+  node: Post;
   cursor: String;
 }
 
-export interface ReviewEdgePromise extends Promise<ReviewEdge>, Fragmentable {
-  node: <T = ReviewPromise>() => T;
+export interface PostEdgePromise extends Promise<PostEdge>, Fragmentable {
+  node: <T = PostPromise>() => T;
   cursor: () => Promise<String>;
 }
 
-export interface ReviewEdgeSubscription
-  extends Promise<AsyncIterator<ReviewEdge>>,
+export interface PostEdgeSubscription
+  extends Promise<AsyncIterator<PostEdge>>,
     Fragmentable {
-  node: <T = ReviewSubscription>() => T;
+  node: <T = PostSubscription>() => T;
   cursor: () => Promise<AsyncIterator<String>>;
 }
 
-export interface AggregateReview {
+export interface AggregatePost {
   count: Int;
 }
 
-export interface AggregateReviewPromise
-  extends Promise<AggregateReview>,
+export interface AggregatePostPromise
+  extends Promise<AggregatePost>,
     Fragmentable {
   count: () => Promise<Int>;
 }
 
-export interface AggregateReviewSubscription
-  extends Promise<AsyncIterator<AggregateReview>>,
+export interface AggregatePostSubscription
+  extends Promise<AsyncIterator<AggregatePost>>,
     Fragmentable {
   count: () => Promise<AsyncIterator<Int>>;
 }
@@ -1119,110 +1257,104 @@ export interface BatchPayloadSubscription
   count: () => Promise<AsyncIterator<Long>>;
 }
 
-export interface BookSubscriptionPayload {
+export interface CommentSubscriptionPayload {
   mutation: MutationType;
-  node: Book;
+  node: Comment;
   updatedFields: String[];
-  previousValues: BookPreviousValues;
+  previousValues: CommentPreviousValues;
 }
 
-export interface BookSubscriptionPayloadPromise
-  extends Promise<BookSubscriptionPayload>,
+export interface CommentSubscriptionPayloadPromise
+  extends Promise<CommentSubscriptionPayload>,
     Fragmentable {
   mutation: () => Promise<MutationType>;
-  node: <T = BookPromise>() => T;
+  node: <T = CommentPromise>() => T;
   updatedFields: () => Promise<String[]>;
-  previousValues: <T = BookPreviousValuesPromise>() => T;
+  previousValues: <T = CommentPreviousValuesPromise>() => T;
 }
 
-export interface BookSubscriptionPayloadSubscription
-  extends Promise<AsyncIterator<BookSubscriptionPayload>>,
+export interface CommentSubscriptionPayloadSubscription
+  extends Promise<AsyncIterator<CommentSubscriptionPayload>>,
     Fragmentable {
   mutation: () => Promise<AsyncIterator<MutationType>>;
-  node: <T = BookSubscription>() => T;
+  node: <T = CommentSubscription>() => T;
   updatedFields: () => Promise<AsyncIterator<String[]>>;
-  previousValues: <T = BookPreviousValuesSubscription>() => T;
+  previousValues: <T = CommentPreviousValuesSubscription>() => T;
 }
 
-export interface BookPreviousValues {
+export interface CommentPreviousValues {
+  id: ID_Output;
+  text: String;
+}
+
+export interface CommentPreviousValuesPromise
+  extends Promise<CommentPreviousValues>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+  text: () => Promise<String>;
+}
+
+export interface CommentPreviousValuesSubscription
+  extends Promise<AsyncIterator<CommentPreviousValues>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  text: () => Promise<AsyncIterator<String>>;
+}
+
+export interface PostSubscriptionPayload {
+  mutation: MutationType;
+  node: Post;
+  updatedFields: String[];
+  previousValues: PostPreviousValues;
+}
+
+export interface PostSubscriptionPayloadPromise
+  extends Promise<PostSubscriptionPayload>,
+    Fragmentable {
+  mutation: () => Promise<MutationType>;
+  node: <T = PostPromise>() => T;
+  updatedFields: () => Promise<String[]>;
+  previousValues: <T = PostPreviousValuesPromise>() => T;
+}
+
+export interface PostSubscriptionPayloadSubscription
+  extends Promise<AsyncIterator<PostSubscriptionPayload>>,
+    Fragmentable {
+  mutation: () => Promise<AsyncIterator<MutationType>>;
+  node: <T = PostSubscription>() => T;
+  updatedFields: () => Promise<AsyncIterator<String[]>>;
+  previousValues: <T = PostPreviousValuesSubscription>() => T;
+}
+
+export interface PostPreviousValues {
   id: ID_Output;
   createdAt: DateTimeOutput;
   updatedAt: DateTimeOutput;
   title: String;
-  isbn: String;
+  body: String;
+  published: Boolean;
 }
 
-export interface BookPreviousValuesPromise
-  extends Promise<BookPreviousValues>,
+export interface PostPreviousValuesPromise
+  extends Promise<PostPreviousValues>,
     Fragmentable {
   id: () => Promise<ID_Output>;
   createdAt: () => Promise<DateTimeOutput>;
   updatedAt: () => Promise<DateTimeOutput>;
   title: () => Promise<String>;
-  isbn: () => Promise<String>;
+  body: () => Promise<String>;
+  published: () => Promise<Boolean>;
 }
 
-export interface BookPreviousValuesSubscription
-  extends Promise<AsyncIterator<BookPreviousValues>>,
+export interface PostPreviousValuesSubscription
+  extends Promise<AsyncIterator<PostPreviousValues>>,
     Fragmentable {
   id: () => Promise<AsyncIterator<ID_Output>>;
   createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
   updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
   title: () => Promise<AsyncIterator<String>>;
-  isbn: () => Promise<AsyncIterator<String>>;
-}
-
-export interface ReviewSubscriptionPayload {
-  mutation: MutationType;
-  node: Review;
-  updatedFields: String[];
-  previousValues: ReviewPreviousValues;
-}
-
-export interface ReviewSubscriptionPayloadPromise
-  extends Promise<ReviewSubscriptionPayload>,
-    Fragmentable {
-  mutation: () => Promise<MutationType>;
-  node: <T = ReviewPromise>() => T;
-  updatedFields: () => Promise<String[]>;
-  previousValues: <T = ReviewPreviousValuesPromise>() => T;
-}
-
-export interface ReviewSubscriptionPayloadSubscription
-  extends Promise<AsyncIterator<ReviewSubscriptionPayload>>,
-    Fragmentable {
-  mutation: () => Promise<AsyncIterator<MutationType>>;
-  node: <T = ReviewSubscription>() => T;
-  updatedFields: () => Promise<AsyncIterator<String[]>>;
-  previousValues: <T = ReviewPreviousValuesSubscription>() => T;
-}
-
-export interface ReviewPreviousValues {
-  id: ID_Output;
-  createdAt: DateTimeOutput;
-  updatedAt: DateTimeOutput;
-  text?: String;
-  rating: Int;
-}
-
-export interface ReviewPreviousValuesPromise
-  extends Promise<ReviewPreviousValues>,
-    Fragmentable {
-  id: () => Promise<ID_Output>;
-  createdAt: () => Promise<DateTimeOutput>;
-  updatedAt: () => Promise<DateTimeOutput>;
-  text: () => Promise<String>;
-  rating: () => Promise<Int>;
-}
-
-export interface ReviewPreviousValuesSubscription
-  extends Promise<AsyncIterator<ReviewPreviousValues>>,
-    Fragmentable {
-  id: () => Promise<AsyncIterator<ID_Output>>;
-  createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
-  updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
-  text: () => Promise<AsyncIterator<String>>;
-  rating: () => Promise<AsyncIterator<Int>>;
+  body: () => Promise<AsyncIterator<String>>;
+  published: () => Promise<AsyncIterator<Boolean>>;
 }
 
 export interface UserSubscriptionPayload {
@@ -1254,7 +1386,8 @@ export interface UserPreviousValues {
   id: ID_Output;
   createdAt: DateTimeOutput;
   updatedAt: DateTimeOutput;
-  username: String;
+  name: String;
+  email: String;
 }
 
 export interface UserPreviousValuesPromise
@@ -1263,7 +1396,8 @@ export interface UserPreviousValuesPromise
   id: () => Promise<ID_Output>;
   createdAt: () => Promise<DateTimeOutput>;
   updatedAt: () => Promise<DateTimeOutput>;
-  username: () => Promise<String>;
+  name: () => Promise<String>;
+  email: () => Promise<String>;
 }
 
 export interface UserPreviousValuesSubscription
@@ -1272,7 +1406,8 @@ export interface UserPreviousValuesSubscription
   id: () => Promise<AsyncIterator<ID_Output>>;
   createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
   updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
-  username: () => Promise<AsyncIterator<String>>;
+  name: () => Promise<AsyncIterator<String>>;
+  email: () => Promise<AsyncIterator<String>>;
 }
 
 /*
@@ -1280,6 +1415,11 @@ The `ID` scalar type represents a unique identifier, often used to refetch an ob
 */
 export type ID_Input = string | number;
 export type ID_Output = string;
+
+/*
+The `String` scalar type represents textual data, represented as UTF-8 character sequences. The String type is most often used by GraphQL to represent free-form human-readable text.
+*/
+export type String = string;
 
 /*
 DateTime scalar input type, allowing Date
@@ -1292,19 +1432,14 @@ DateTime scalar output type, which is always a string
 export type DateTimeOutput = string;
 
 /*
-The `String` scalar type represents textual data, represented as UTF-8 character sequences. The String type is most often used by GraphQL to represent free-form human-readable text.
+The `Boolean` scalar type represents `true` or `false`.
 */
-export type String = string;
+export type Boolean = boolean;
 
 /*
 The `Int` scalar type represents non-fractional signed whole numeric values. Int can represent values between -(2^31) and 2^31 - 1. 
 */
 export type Int = number;
-
-/*
-The `Boolean` scalar type represents `true` or `false`.
-*/
-export type Boolean = boolean;
 
 export type Long = string;
 
@@ -1318,11 +1453,11 @@ export const models: Model[] = [
     embedded: false
   },
   {
-    name: "Book",
+    name: "Post",
     embedded: false
   },
   {
-    name: "Review",
+    name: "Comment",
     embedded: false
   }
 ];

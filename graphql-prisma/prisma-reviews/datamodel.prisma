@@ -11,7 +11,7 @@ type Book {
   createdAt: DateTime! @createdAt
   updatedAt: DateTime! @updatedAt
   title: String!
-  author: User!
+  author: String!
   isbn: String!
   reviews: [Review!]! @relation(name: "ReviewToBook", onDelete: CASCADE)
 }

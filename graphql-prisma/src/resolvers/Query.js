@@ -1,13 +1,11 @@
 const Query = {
-  users: async (parent, { query }, { db: { users }, prisma }, info) => {
-    const prismaUsers = await prisma.users()
-    console.log('hello from resolver')
-    console.log(prismaUsers)
-    return query
-      ? users.filter(({ name }) =>
-          name.toLowerCase().includes(query.toLowerCase())
-        )
-      : users
+  users: (parent, { query }, { db: { users }, prisma }, info) => {
+    return prisma.users()
+    // return query
+    //   ? users.filter(({ name }) =>
+    //       name.toLowerCase().includes(query.toLowerCase())
+    //     )
+    //   : users
   },
   me: () => ({
     id: '8675309',

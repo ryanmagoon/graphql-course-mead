@@ -24,16 +24,7 @@ const server = new GraphQLServer({
 })
 
 server.start(async () => {
-  const data = await prisma.createPost({
-    title: 'my new post',
-    body: 'look at my new post',
-    published: true,
-    author: {
-      connect: {
-        id: 'cjvcqr5ck003k0865lql3m1ap'
-      }
-    }
-  })
-  console.log(data)
+  const users = await prisma.users()
+  console.log({ users })
   console.log('The server is up!')
 })
