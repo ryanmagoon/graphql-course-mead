@@ -3,11 +3,11 @@ module.exports = {
   // Please don't change this file manually but run `prisma generate` to update it.
   // For more information, please read the docs: https://www.prisma.io/docs/prisma-client/
 
-/* GraphQL */ `type AggregateComment {
+/* GraphQL */ `type AggregateBook {
   count: Int!
 }
 
-type AggregatePost {
+type AggregateReview {
   count: Int!
 }
 
@@ -19,193 +19,117 @@ type BatchPayload {
   count: Long!
 }
 
-type Comment {
+type Book {
   id: ID!
-  text: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  title: String!
   author: User!
-  post: Post!
+  isbn: String!
+  reviews(where: ReviewWhereInput, orderBy: ReviewOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Review!]
 }
 
-type CommentConnection {
+type BookConnection {
   pageInfo: PageInfo!
-  edges: [CommentEdge]!
-  aggregate: AggregateComment!
+  edges: [BookEdge]!
+  aggregate: AggregateBook!
 }
 
-input CommentCreateInput {
+input BookCreateInput {
   id: ID
-  text: String!
-  author: UserCreateOneWithoutCommentsInput!
-  post: PostCreateOneWithoutCommentsInput!
+  title: String!
+  author: UserCreateOneInput!
+  isbn: String!
+  reviews: ReviewCreateManyWithoutBookInput
 }
 
-input CommentCreateManyWithoutAuthorInput {
-  create: [CommentCreateWithoutAuthorInput!]
-  connect: [CommentWhereUniqueInput!]
+input BookCreateOneWithoutReviewsInput {
+  create: BookCreateWithoutReviewsInput
+  connect: BookWhereUniqueInput
 }
 
-input CommentCreateManyWithoutPostInput {
-  create: [CommentCreateWithoutPostInput!]
-  connect: [CommentWhereUniqueInput!]
-}
-
-input CommentCreateWithoutAuthorInput {
+input BookCreateWithoutReviewsInput {
   id: ID
-  text: String!
-  post: PostCreateOneWithoutCommentsInput!
+  title: String!
+  author: UserCreateOneInput!
+  isbn: String!
 }
 
-input CommentCreateWithoutPostInput {
-  id: ID
-  text: String!
-  author: UserCreateOneWithoutCommentsInput!
-}
-
-type CommentEdge {
-  node: Comment!
+type BookEdge {
+  node: Book!
   cursor: String!
 }
 
-enum CommentOrderByInput {
+enum BookOrderByInput {
   id_ASC
   id_DESC
-  text_ASC
-  text_DESC
+  createdAt_ASC
+  createdAt_DESC
+  updatedAt_ASC
+  updatedAt_DESC
+  title_ASC
+  title_DESC
+  isbn_ASC
+  isbn_DESC
 }
 
-type CommentPreviousValues {
+type BookPreviousValues {
   id: ID!
-  text: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  title: String!
+  isbn: String!
 }
 
-input CommentScalarWhereInput {
-  id: ID
-  id_not: ID
-  id_in: [ID!]
-  id_not_in: [ID!]
-  id_lt: ID
-  id_lte: ID
-  id_gt: ID
-  id_gte: ID
-  id_contains: ID
-  id_not_contains: ID
-  id_starts_with: ID
-  id_not_starts_with: ID
-  id_ends_with: ID
-  id_not_ends_with: ID
-  text: String
-  text_not: String
-  text_in: [String!]
-  text_not_in: [String!]
-  text_lt: String
-  text_lte: String
-  text_gt: String
-  text_gte: String
-  text_contains: String
-  text_not_contains: String
-  text_starts_with: String
-  text_not_starts_with: String
-  text_ends_with: String
-  text_not_ends_with: String
-  AND: [CommentScalarWhereInput!]
-  OR: [CommentScalarWhereInput!]
-  NOT: [CommentScalarWhereInput!]
-}
-
-type CommentSubscriptionPayload {
+type BookSubscriptionPayload {
   mutation: MutationType!
-  node: Comment
+  node: Book
   updatedFields: [String!]
-  previousValues: CommentPreviousValues
+  previousValues: BookPreviousValues
 }
 
-input CommentSubscriptionWhereInput {
+input BookSubscriptionWhereInput {
   mutation_in: [MutationType!]
   updatedFields_contains: String
   updatedFields_contains_every: [String!]
   updatedFields_contains_some: [String!]
-  node: CommentWhereInput
-  AND: [CommentSubscriptionWhereInput!]
-  OR: [CommentSubscriptionWhereInput!]
-  NOT: [CommentSubscriptionWhereInput!]
+  node: BookWhereInput
+  AND: [BookSubscriptionWhereInput!]
+  OR: [BookSubscriptionWhereInput!]
+  NOT: [BookSubscriptionWhereInput!]
 }
 
-input CommentUpdateInput {
-  text: String
-  author: UserUpdateOneRequiredWithoutCommentsInput
-  post: PostUpdateOneRequiredWithoutCommentsInput
+input BookUpdateInput {
+  title: String
+  author: UserUpdateOneRequiredInput
+  isbn: String
+  reviews: ReviewUpdateManyWithoutBookInput
 }
 
-input CommentUpdateManyDataInput {
-  text: String
+input BookUpdateManyMutationInput {
+  title: String
+  isbn: String
 }
 
-input CommentUpdateManyMutationInput {
-  text: String
+input BookUpdateOneRequiredWithoutReviewsInput {
+  create: BookCreateWithoutReviewsInput
+  update: BookUpdateWithoutReviewsDataInput
+  upsert: BookUpsertWithoutReviewsInput
+  connect: BookWhereUniqueInput
 }
 
-input CommentUpdateManyWithoutAuthorInput {
-  create: [CommentCreateWithoutAuthorInput!]
-  delete: [CommentWhereUniqueInput!]
-  connect: [CommentWhereUniqueInput!]
-  set: [CommentWhereUniqueInput!]
-  disconnect: [CommentWhereUniqueInput!]
-  update: [CommentUpdateWithWhereUniqueWithoutAuthorInput!]
-  upsert: [CommentUpsertWithWhereUniqueWithoutAuthorInput!]
-  deleteMany: [CommentScalarWhereInput!]
-  updateMany: [CommentUpdateManyWithWhereNestedInput!]
+input BookUpdateWithoutReviewsDataInput {
+  title: String
+  author: UserUpdateOneRequiredInput
+  isbn: String
 }
 
-input CommentUpdateManyWithoutPostInput {
-  create: [CommentCreateWithoutPostInput!]
-  delete: [CommentWhereUniqueInput!]
-  connect: [CommentWhereUniqueInput!]
-  set: [CommentWhereUniqueInput!]
-  disconnect: [CommentWhereUniqueInput!]
-  update: [CommentUpdateWithWhereUniqueWithoutPostInput!]
-  upsert: [CommentUpsertWithWhereUniqueWithoutPostInput!]
-  deleteMany: [CommentScalarWhereInput!]
-  updateMany: [CommentUpdateManyWithWhereNestedInput!]
+input BookUpsertWithoutReviewsInput {
+  update: BookUpdateWithoutReviewsDataInput!
+  create: BookCreateWithoutReviewsInput!
 }
 
-input CommentUpdateManyWithWhereNestedInput {
-  where: CommentScalarWhereInput!
-  data: CommentUpdateManyDataInput!
-}
-
-input CommentUpdateWithoutAuthorDataInput {
-  text: String
-  post: PostUpdateOneRequiredWithoutCommentsInput
-}
-
-input CommentUpdateWithoutPostDataInput {
-  text: String
-  author: UserUpdateOneRequiredWithoutCommentsInput
-}
-
-input CommentUpdateWithWhereUniqueWithoutAuthorInput {
-  where: CommentWhereUniqueInput!
-  data: CommentUpdateWithoutAuthorDataInput!
-}
-
-input CommentUpdateWithWhereUniqueWithoutPostInput {
-  where: CommentWhereUniqueInput!
-  data: CommentUpdateWithoutPostDataInput!
-}
-
-input CommentUpsertWithWhereUniqueWithoutAuthorInput {
-  where: CommentWhereUniqueInput!
-  update: CommentUpdateWithoutAuthorDataInput!
-  create: CommentCreateWithoutAuthorInput!
-}
-
-input CommentUpsertWithWhereUniqueWithoutPostInput {
-  where: CommentWhereUniqueInput!
-  update: CommentUpdateWithoutPostDataInput!
-  create: CommentCreateWithoutPostInput!
-}
-
-input CommentWhereInput {
+input BookWhereInput {
   id: ID
   id_not: ID
   id_in: [ID!]
@@ -220,28 +144,60 @@ input CommentWhereInput {
   id_not_starts_with: ID
   id_ends_with: ID
   id_not_ends_with: ID
-  text: String
-  text_not: String
-  text_in: [String!]
-  text_not_in: [String!]
-  text_lt: String
-  text_lte: String
-  text_gt: String
-  text_gte: String
-  text_contains: String
-  text_not_contains: String
-  text_starts_with: String
-  text_not_starts_with: String
-  text_ends_with: String
-  text_not_ends_with: String
+  createdAt: DateTime
+  createdAt_not: DateTime
+  createdAt_in: [DateTime!]
+  createdAt_not_in: [DateTime!]
+  createdAt_lt: DateTime
+  createdAt_lte: DateTime
+  createdAt_gt: DateTime
+  createdAt_gte: DateTime
+  updatedAt: DateTime
+  updatedAt_not: DateTime
+  updatedAt_in: [DateTime!]
+  updatedAt_not_in: [DateTime!]
+  updatedAt_lt: DateTime
+  updatedAt_lte: DateTime
+  updatedAt_gt: DateTime
+  updatedAt_gte: DateTime
+  title: String
+  title_not: String
+  title_in: [String!]
+  title_not_in: [String!]
+  title_lt: String
+  title_lte: String
+  title_gt: String
+  title_gte: String
+  title_contains: String
+  title_not_contains: String
+  title_starts_with: String
+  title_not_starts_with: String
+  title_ends_with: String
+  title_not_ends_with: String
   author: UserWhereInput
-  post: PostWhereInput
-  AND: [CommentWhereInput!]
-  OR: [CommentWhereInput!]
-  NOT: [CommentWhereInput!]
+  isbn: String
+  isbn_not: String
+  isbn_in: [String!]
+  isbn_not_in: [String!]
+  isbn_lt: String
+  isbn_lte: String
+  isbn_gt: String
+  isbn_gte: String
+  isbn_contains: String
+  isbn_not_contains: String
+  isbn_starts_with: String
+  isbn_not_starts_with: String
+  isbn_ends_with: String
+  isbn_not_ends_with: String
+  reviews_every: ReviewWhereInput
+  reviews_some: ReviewWhereInput
+  reviews_none: ReviewWhereInput
+  AND: [BookWhereInput!]
+  OR: [BookWhereInput!]
+  NOT: [BookWhereInput!]
 }
 
-input CommentWhereUniqueInput {
+input BookWhereUniqueInput {
   id: ID
 }
 
@@ -250,18 +206,18 @@ scalar DateTime
 scalar Long
 
 type Mutation {
-  createComment(data: CommentCreateInput!): Comment!
-  updateComment(data: CommentUpdateInput!, where: CommentWhereUniqueInput!): Comment
-  updateManyComments(data: CommentUpdateManyMutationInput!, where: CommentWhereInput): BatchPayload!
-  upsertComment(where: CommentWhereUniqueInput!, create: CommentCreateInput!, update: CommentUpdateInput!): Comment!
-  deleteComment(where: CommentWhereUniqueInput!): Comment
-  deleteManyComments(where: CommentWhereInput): BatchPayload!
-  createPost(data: PostCreateInput!): Post!
-  updatePost(data: PostUpdateInput!, where: PostWhereUniqueInput!): Post
-  updateManyPosts(data: PostUpdateManyMutationInput!, where: PostWhereInput): BatchPayload!
-  upsertPost(where: PostWhereUniqueInput!, create: PostCreateInput!, update: PostUpdateInput!): Post!
-  deletePost(where: PostWhereUniqueInput!): Post
-  deleteManyPosts(where: PostWhereInput): BatchPayload!
+  createBook(data: BookCreateInput!): Book!
+  updateBook(data: BookUpdateInput!, where: BookWhereUniqueInput!): Book
+  updateManyBooks(data: BookUpdateManyMutationInput!, where: BookWhereInput): BatchPayload!
+  upsertBook(where: BookWhereUniqueInput!, create: BookCreateInput!, update: BookUpdateInput!): Book!
+  deleteBook(where: BookWhereUniqueInput!): Book
+  deleteManyBooks(where: BookWhereInput): BatchPayload!
+  createReview(data: ReviewCreateInput!): Review!
+  updateReview(data: ReviewUpdateInput!, where: ReviewWhereUniqueInput!): Review
+  updateManyReviews(data: ReviewUpdateManyMutationInput!, where: ReviewWhereInput): BatchPayload!
+  upsertReview(where: ReviewWhereUniqueInput!, create: ReviewCreateInput!, update: ReviewUpdateInput!): Review!
+  deleteReview(where: ReviewWhereUniqueInput!): Review
+  deleteManyReviews(where: ReviewWhereInput): BatchPayload!
   createUser(data: UserCreateInput!): User!
   updateUser(data: UserUpdateInput!, where: UserWhereUniqueInput!): User
   updateManyUsers(data: UserUpdateManyMutationInput!, where: UserWhereInput): BatchPayload!
@@ -287,335 +243,316 @@ type PageInfo {
   endCursor: String
 }
 
-type Post {
-  id: ID!
-  createdAt: DateTime!
-  updatedAt: DateTime!
-  title: String!
-  body: String!
-  published: Boolean!
-  author: User!
-  comments(where: CommentWhereInput, orderBy: CommentOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Comment!]
-}
-
-type PostConnection {
-  pageInfo: PageInfo!
-  edges: [PostEdge]!
-  aggregate: AggregatePost!
-}
-
-input PostCreateInput {
-  id: ID
-  title: String!
-  body: String!
-  published: Boolean!
-  author: UserCreateOneWithoutPostsInput!
-  comments: CommentCreateManyWithoutPostInput
-}
-
-input PostCreateManyWithoutAuthorInput {
-  create: [PostCreateWithoutAuthorInput!]
-  connect: [PostWhereUniqueInput!]
-}
-
-input PostCreateOneWithoutCommentsInput {
-  create: PostCreateWithoutCommentsInput
-  connect: PostWhereUniqueInput
-}
-
-input PostCreateWithoutAuthorInput {
-  id: ID
-  title: String!
-  body: String!
-  published: Boolean!
-  comments: CommentCreateManyWithoutPostInput
-}
-
-input PostCreateWithoutCommentsInput {
-  id: ID
-  title: String!
-  body: String!
-  published: Boolean!
-  author: UserCreateOneWithoutPostsInput!
-}
-
-type PostEdge {
-  node: Post!
-  cursor: String!
-}
-
-enum PostOrderByInput {
-  id_ASC
-  id_DESC
-  createdAt_ASC
-  createdAt_DESC
-  updatedAt_ASC
-  updatedAt_DESC
-  title_ASC
-  title_DESC
-  body_ASC
-  body_DESC
-  published_ASC
-  published_DESC
-}
-
-type PostPreviousValues {
-  id: ID!
-  createdAt: DateTime!
-  updatedAt: DateTime!
-  title: String!
-  body: String!
-  published: Boolean!
-}
-
-input PostScalarWhereInput {
-  id: ID
-  id_not: ID
-  id_in: [ID!]
-  id_not_in: [ID!]
-  id_lt: ID
-  id_lte: ID
-  id_gt: ID
-  id_gte: ID
-  id_contains: ID
-  id_not_contains: ID
-  id_starts_with: ID
-  id_not_starts_with: ID
-  id_ends_with: ID
-  id_not_ends_with: ID
-  createdAt: DateTime
-  createdAt_not: DateTime
-  createdAt_in: [DateTime!]
-  createdAt_not_in: [DateTime!]
-  createdAt_lt: DateTime
-  createdAt_lte: DateTime
-  createdAt_gt: DateTime
-  createdAt_gte: DateTime
-  updatedAt: DateTime
-  updatedAt_not: DateTime
-  updatedAt_in: [DateTime!]
-  updatedAt_not_in: [DateTime!]
-  updatedAt_lt: DateTime
-  updatedAt_lte: DateTime
-  updatedAt_gt: DateTime
-  updatedAt_gte: DateTime
-  title: String
-  title_not: String
-  title_in: [String!]
-  title_not_in: [String!]
-  title_lt: String
-  title_lte: String
-  title_gt: String
-  title_gte: String
-  title_contains: String
-  title_not_contains: String
-  title_starts_with: String
-  title_not_starts_with: String
-  title_ends_with: String
-  title_not_ends_with: String
-  body: String
-  body_not: String
-  body_in: [String!]
-  body_not_in: [String!]
-  body_lt: String
-  body_lte: String
-  body_gt: String
-  body_gte: String
-  body_contains: String
-  body_not_contains: String
-  body_starts_with: String
-  body_not_starts_with: String
-  body_ends_with: String
-  body_not_ends_with: String
-  published: Boolean
-  published_not: Boolean
-  AND: [PostScalarWhereInput!]
-  OR: [PostScalarWhereInput!]
-  NOT: [PostScalarWhereInput!]
-}
-
-type PostSubscriptionPayload {
-  mutation: MutationType!
-  node: Post
-  updatedFields: [String!]
-  previousValues: PostPreviousValues
-}
-
-input PostSubscriptionWhereInput {
-  mutation_in: [MutationType!]
-  updatedFields_contains: String
-  updatedFields_contains_every: [String!]
-  updatedFields_contains_some: [String!]
-  node: PostWhereInput
-  AND: [PostSubscriptionWhereInput!]
-  OR: [PostSubscriptionWhereInput!]
-  NOT: [PostSubscriptionWhereInput!]
-}
-
-input PostUpdateInput {
-  title: String
-  body: String
-  published: Boolean
-  author: UserUpdateOneRequiredWithoutPostsInput
-  comments: CommentUpdateManyWithoutPostInput
-}
-
-input PostUpdateManyDataInput {
-  title: String
-  body: String
-  published: Boolean
-}
-
-input PostUpdateManyMutationInput {
-  title: String
-  body: String
-  published: Boolean
-}
-
-input PostUpdateManyWithoutAuthorInput {
-  create: [PostCreateWithoutAuthorInput!]
-  delete: [PostWhereUniqueInput!]
-  connect: [PostWhereUniqueInput!]
-  set: [PostWhereUniqueInput!]
-  disconnect: [PostWhereUniqueInput!]
-  update: [PostUpdateWithWhereUniqueWithoutAuthorInput!]
-  upsert: [PostUpsertWithWhereUniqueWithoutAuthorInput!]
-  deleteMany: [PostScalarWhereInput!]
-  updateMany: [PostUpdateManyWithWhereNestedInput!]
-}
-
-input PostUpdateManyWithWhereNestedInput {
-  where: PostScalarWhereInput!
-  data: PostUpdateManyDataInput!
-}
-
-input PostUpdateOneRequiredWithoutCommentsInput {
-  create: PostCreateWithoutCommentsInput
-  update: PostUpdateWithoutCommentsDataInput
-  upsert: PostUpsertWithoutCommentsInput
-  connect: PostWhereUniqueInput
-}
-
-input PostUpdateWithoutAuthorDataInput {
-  title: String
-  body: String
-  published: Boolean
-  comments: CommentUpdateManyWithoutPostInput
-}
-
-input PostUpdateWithoutCommentsDataInput {
-  title: String
-  body: String
-  published: Boolean
-  author: UserUpdateOneRequiredWithoutPostsInput
-}
-
-input PostUpdateWithWhereUniqueWithoutAuthorInput {
-  where: PostWhereUniqueInput!
-  data: PostUpdateWithoutAuthorDataInput!
-}
-
-input PostUpsertWithoutCommentsInput {
-  update: PostUpdateWithoutCommentsDataInput!
-  create: PostCreateWithoutCommentsInput!
-}
-
-input PostUpsertWithWhereUniqueWithoutAuthorInput {
-  where: PostWhereUniqueInput!
-  update: PostUpdateWithoutAuthorDataInput!
-  create: PostCreateWithoutAuthorInput!
-}
-
-input PostWhereInput {
-  id: ID
-  id_not: ID
-  id_in: [ID!]
-  id_not_in: [ID!]
-  id_lt: ID
-  id_lte: ID
-  id_gt: ID
-  id_gte: ID
-  id_contains: ID
-  id_not_contains: ID
-  id_starts_with: ID
-  id_not_starts_with: ID
-  id_ends_with: ID
-  id_not_ends_with: ID
-  createdAt: DateTime
-  createdAt_not: DateTime
-  createdAt_in: [DateTime!]
-  createdAt_not_in: [DateTime!]
-  createdAt_lt: DateTime
-  createdAt_lte: DateTime
-  createdAt_gt: DateTime
-  createdAt_gte: DateTime
-  updatedAt: DateTime
-  updatedAt_not: DateTime
-  updatedAt_in: [DateTime!]
-  updatedAt_not_in: [DateTime!]
-  updatedAt_lt: DateTime
-  updatedAt_lte: DateTime
-  updatedAt_gt: DateTime
-  updatedAt_gte: DateTime
-  title: String
-  title_not: String
-  title_in: [String!]
-  title_not_in: [String!]
-  title_lt: String
-  title_lte: String
-  title_gt: String
-  title_gte: String
-  title_contains: String
-  title_not_contains: String
-  title_starts_with: String
-  title_not_starts_with: String
-  title_ends_with: String
-  title_not_ends_with: String
-  body: String
-  body_not: String
-  body_in: [String!]
-  body_not_in: [String!]
-  body_lt: String
-  body_lte: String
-  body_gt: String
-  body_gte: String
-  body_contains: String
-  body_not_contains: String
-  body_starts_with: String
-  body_not_starts_with: String
-  body_ends_with: String
-  body_not_ends_with: String
-  published: Boolean
-  published_not: Boolean
-  author: UserWhereInput
-  comments_every: CommentWhereInput
-  comments_some: CommentWhereInput
-  comments_none: CommentWhereInput
-  AND: [PostWhereInput!]
-  OR: [PostWhereInput!]
-  NOT: [PostWhereInput!]
-}
-
-input PostWhereUniqueInput {
-  id: ID
-}
-
 type Query {
-  comment(where: CommentWhereUniqueInput!): Comment
-  comments(where: CommentWhereInput, orderBy: CommentOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Comment]!
-  commentsConnection(where: CommentWhereInput, orderBy: CommentOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): CommentConnection!
-  post(where: PostWhereUniqueInput!): Post
-  posts(where: PostWhereInput, orderBy: PostOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Post]!
-  postsConnection(where: PostWhereInput, orderBy: PostOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): PostConnection!
+  book(where: BookWhereUniqueInput!): Book
+  books(where: BookWhereInput, orderBy: BookOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Book]!
+  booksConnection(where: BookWhereInput, orderBy: BookOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): BookConnection!
+  review(where: ReviewWhereUniqueInput!): Review
+  reviews(where: ReviewWhereInput, orderBy: ReviewOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Review]!
+  reviewsConnection(where: ReviewWhereInput, orderBy: ReviewOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): ReviewConnection!
   user(where: UserWhereUniqueInput!): User
   users(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [User]!
   usersConnection(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): UserConnection!
   node(id: ID!): Node
 }
 
+type Review {
+  id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  text: String
+  rating: Int!
+  book: Book!
+  author: User!
+}
+
+type ReviewConnection {
+  pageInfo: PageInfo!
+  edges: [ReviewEdge]!
+  aggregate: AggregateReview!
+}
+
+input ReviewCreateInput {
+  id: ID
+  text: String
+  rating: Int!
+  book: BookCreateOneWithoutReviewsInput!
+  author: UserCreateOneWithoutReviewsInput!
+}
+
+input ReviewCreateManyWithoutAuthorInput {
+  create: [ReviewCreateWithoutAuthorInput!]
+  connect: [ReviewWhereUniqueInput!]
+}
+
+input ReviewCreateManyWithoutBookInput {
+  create: [ReviewCreateWithoutBookInput!]
+  connect: [ReviewWhereUniqueInput!]
+}
+
+input ReviewCreateWithoutAuthorInput {
+  id: ID
+  text: String
+  rating: Int!
+  book: BookCreateOneWithoutReviewsInput!
+}
+
+input ReviewCreateWithoutBookInput {
+  id: ID
+  text: String
+  rating: Int!
+  author: UserCreateOneWithoutReviewsInput!
+}
+
+type ReviewEdge {
+  node: Review!
+  cursor: String!
+}
+
+enum ReviewOrderByInput {
+  id_ASC
+  id_DESC
+  createdAt_ASC
+  createdAt_DESC
+  updatedAt_ASC
+  updatedAt_DESC
+  text_ASC
+  text_DESC
+  rating_ASC
+  rating_DESC
+}
+
+type ReviewPreviousValues {
+  id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  text: String
+  rating: Int!
+}
+
+input ReviewScalarWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  createdAt: DateTime
+  createdAt_not: DateTime
+  createdAt_in: [DateTime!]
+  createdAt_not_in: [DateTime!]
+  createdAt_lt: DateTime
+  createdAt_lte: DateTime
+  createdAt_gt: DateTime
+  createdAt_gte: DateTime
+  updatedAt: DateTime
+  updatedAt_not: DateTime
+  updatedAt_in: [DateTime!]
+  updatedAt_not_in: [DateTime!]
+  updatedAt_lt: DateTime
+  updatedAt_lte: DateTime
+  updatedAt_gt: DateTime
+  updatedAt_gte: DateTime
+  text: String
+  text_not: String
+  text_in: [String!]
+  text_not_in: [String!]
+  text_lt: String
+  text_lte: String
+  text_gt: String
+  text_gte: String
+  text_contains: String
+  text_not_contains: String
+  text_starts_with: String
+  text_not_starts_with: String
+  text_ends_with: String
+  text_not_ends_with: String
+  rating: Int
+  rating_not: Int
+  rating_in: [Int!]
+  rating_not_in: [Int!]
+  rating_lt: Int
+  rating_lte: Int
+  rating_gt: Int
+  rating_gte: Int
+  AND: [ReviewScalarWhereInput!]
+  OR: [ReviewScalarWhereInput!]
+  NOT: [ReviewScalarWhereInput!]
+}
+
+type ReviewSubscriptionPayload {
+  mutation: MutationType!
+  node: Review
+  updatedFields: [String!]
+  previousValues: ReviewPreviousValues
+}
+
+input ReviewSubscriptionWhereInput {
+  mutation_in: [MutationType!]
+  updatedFields_contains: String
+  updatedFields_contains_every: [String!]
+  updatedFields_contains_some: [String!]
+  node: ReviewWhereInput
+  AND: [ReviewSubscriptionWhereInput!]
+  OR: [ReviewSubscriptionWhereInput!]
+  NOT: [ReviewSubscriptionWhereInput!]
+}
+
+input ReviewUpdateInput {
+  text: String
+  rating: Int
+  book: BookUpdateOneRequiredWithoutReviewsInput
+  author: UserUpdateOneRequiredWithoutReviewsInput
+}
+
+input ReviewUpdateManyDataInput {
+  text: String
+  rating: Int
+}
+
+input ReviewUpdateManyMutationInput {
+  text: String
+  rating: Int
+}
+
+input ReviewUpdateManyWithoutAuthorInput {
+  create: [ReviewCreateWithoutAuthorInput!]
+  delete: [ReviewWhereUniqueInput!]
+  connect: [ReviewWhereUniqueInput!]
+  set: [ReviewWhereUniqueInput!]
+  disconnect: [ReviewWhereUniqueInput!]
+  update: [ReviewUpdateWithWhereUniqueWithoutAuthorInput!]
+  upsert: [ReviewUpsertWithWhereUniqueWithoutAuthorInput!]
+  deleteMany: [ReviewScalarWhereInput!]
+  updateMany: [ReviewUpdateManyWithWhereNestedInput!]
+}
+
+input ReviewUpdateManyWithoutBookInput {
+  create: [ReviewCreateWithoutBookInput!]
+  delete: [ReviewWhereUniqueInput!]
+  connect: [ReviewWhereUniqueInput!]
+  set: [ReviewWhereUniqueInput!]
+  disconnect: [ReviewWhereUniqueInput!]
+  update: [ReviewUpdateWithWhereUniqueWithoutBookInput!]
+  upsert: [ReviewUpsertWithWhereUniqueWithoutBookInput!]
+  deleteMany: [ReviewScalarWhereInput!]
+  updateMany: [ReviewUpdateManyWithWhereNestedInput!]
+}
+
+input ReviewUpdateManyWithWhereNestedInput {
+  where: ReviewScalarWhereInput!
+  data: ReviewUpdateManyDataInput!
+}
+
+input ReviewUpdateWithoutAuthorDataInput {
+  text: String
+  rating: Int
+  book: BookUpdateOneRequiredWithoutReviewsInput
+}
+
+input ReviewUpdateWithoutBookDataInput {
+  text: String
+  rating: Int
+  author: UserUpdateOneRequiredWithoutReviewsInput
+}
+
+input ReviewUpdateWithWhereUniqueWithoutAuthorInput {
+  where: ReviewWhereUniqueInput!
+  data: ReviewUpdateWithoutAuthorDataInput!
+}
+
+input ReviewUpdateWithWhereUniqueWithoutBookInput {
+  where: ReviewWhereUniqueInput!
+  data: ReviewUpdateWithoutBookDataInput!
+}
+
+input ReviewUpsertWithWhereUniqueWithoutAuthorInput {
+  where: ReviewWhereUniqueInput!
+  update: ReviewUpdateWithoutAuthorDataInput!
+  create: ReviewCreateWithoutAuthorInput!
+}
+
+input ReviewUpsertWithWhereUniqueWithoutBookInput {
+  where: ReviewWhereUniqueInput!
+  update: ReviewUpdateWithoutBookDataInput!
+  create: ReviewCreateWithoutBookInput!
+}
+
+input ReviewWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  createdAt: DateTime
+  createdAt_not: DateTime
+  createdAt_in: [DateTime!]
+  createdAt_not_in: [DateTime!]
+  createdAt_lt: DateTime
+  createdAt_lte: DateTime
+  createdAt_gt: DateTime
+  createdAt_gte: DateTime
+  updatedAt: DateTime
+  updatedAt_not: DateTime
+  updatedAt_in: [DateTime!]
+  updatedAt_not_in: [DateTime!]
+  updatedAt_lt: DateTime
+  updatedAt_lte: DateTime
+  updatedAt_gt: DateTime
+  updatedAt_gte: DateTime
+  text: String
+  text_not: String
+  text_in: [String!]
+  text_not_in: [String!]
+  text_lt: String
+  text_lte: String
+  text_gt: String
+  text_gte: String
+  text_contains: String
+  text_not_contains: String
+  text_starts_with: String
+  text_not_starts_with: String
+  text_ends_with: String
+  text_not_ends_with: String
+  rating: Int
+  rating_not: Int
+  rating_in: [Int!]
+  rating_not_in: [Int!]
+  rating_lt: Int
+  rating_lte: Int
+  rating_gt: Int
+  rating_gte: Int
+  book: BookWhereInput
+  author: UserWhereInput
+  AND: [ReviewWhereInput!]
+  OR: [ReviewWhereInput!]
+  NOT: [ReviewWhereInput!]
+}
+
+input ReviewWhereUniqueInput {
+  id: ID
+}
+
 type Subscription {
-  comment(where: CommentSubscriptionWhereInput): CommentSubscriptionPayload
-  post(where: PostSubscriptionWhereInput): PostSubscriptionPayload
+  book(where: BookSubscriptionWhereInput): BookSubscriptionPayload
+  review(where: ReviewSubscriptionWhereInput): ReviewSubscriptionPayload
   user(where: UserSubscriptionWhereInput): UserSubscriptionPayload
 }
 
@@ -623,10 +560,8 @@ type User {
   id: ID!
   createdAt: DateTime!
   updatedAt: DateTime!
-  name: String!
-  email: String!
-  posts(where: PostWhereInput, orderBy: PostOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Post!]
-  comments(where: CommentWhereInput, orderBy: CommentOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Comment!]
+  username: String!
+  reviews(where: ReviewWhereInput, orderBy: ReviewOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Review!]
 }
 
 type UserConnection {
@@ -637,34 +572,23 @@ type UserConnection {
 
 input UserCreateInput {
   id: ID
-  name: String!
-  email: String!
-  posts: PostCreateManyWithoutAuthorInput
-  comments: CommentCreateManyWithoutAuthorInput
+  username: String!
+  reviews: ReviewCreateManyWithoutAuthorInput
 }
 
-input UserCreateOneWithoutCommentsInput {
-  create: UserCreateWithoutCommentsInput
+input UserCreateOneInput {
+  create: UserCreateInput
   connect: UserWhereUniqueInput
 }
 
-input UserCreateOneWithoutPostsInput {
-  create: UserCreateWithoutPostsInput
+input UserCreateOneWithoutReviewsInput {
+  create: UserCreateWithoutReviewsInput
   connect: UserWhereUniqueInput
 }
 
-input UserCreateWithoutCommentsInput {
+input UserCreateWithoutReviewsInput {
   id: ID
-  name: String!
-  email: String!
-  posts: PostCreateManyWithoutAuthorInput
-}
-
-input UserCreateWithoutPostsInput {
-  id: ID
-  name: String!
-  email: String!
-  comments: CommentCreateManyWithoutAuthorInput
+  username: String!
 }
 
 type UserEdge {
@@ -679,18 +603,15 @@ enum UserOrderByInput {
   createdAt_DESC
   updatedAt_ASC
   updatedAt_DESC
-  name_ASC
-  name_DESC
-  email_ASC
-  email_DESC
+  username_ASC
+  username_DESC
 }
 
 type UserPreviousValues {
   id: ID!
   createdAt: DateTime!
   updatedAt: DateTime!
-  name: String!
-  email: String!
+  username: String!
 }
 
 type UserSubscriptionPayload {
@@ -711,52 +632,46 @@ input UserSubscriptionWhereInput {
   NOT: [UserSubscriptionWhereInput!]
 }
 
+input UserUpdateDataInput {
+  username: String
+  reviews: ReviewUpdateManyWithoutAuthorInput
+}
+
 input UserUpdateInput {
-  name: String
-  email: String
-  posts: PostUpdateManyWithoutAuthorInput
-  comments: CommentUpdateManyWithoutAuthorInput
+  username: String
+  reviews: ReviewUpdateManyWithoutAuthorInput
 }
 
 input UserUpdateManyMutationInput {
-  name: String
-  email: String
+  username: String
 }
 
-input UserUpdateOneRequiredWithoutCommentsInput {
-  create: UserCreateWithoutCommentsInput
-  update: UserUpdateWithoutCommentsDataInput
-  upsert: UserUpsertWithoutCommentsInput
+input UserUpdateOneRequiredInput {
+  create: UserCreateInput
+  update: UserUpdateDataInput
+  upsert: UserUpsertNestedInput
   connect: UserWhereUniqueInput
 }
 
-input UserUpdateOneRequiredWithoutPostsInput {
-  create: UserCreateWithoutPostsInput
-  update: UserUpdateWithoutPostsDataInput
-  upsert: UserUpsertWithoutPostsInput
+input UserUpdateOneRequiredWithoutReviewsInput {
+  create: UserCreateWithoutReviewsInput
+  update: UserUpdateWithoutReviewsDataInput
+  upsert: UserUpsertWithoutReviewsInput
   connect: UserWhereUniqueInput
 }
 
-input UserUpdateWithoutCommentsDataInput {
-  name: String
-  email: String
-  posts: PostUpdateManyWithoutAuthorInput
+input UserUpdateWithoutReviewsDataInput {
+  username: String
 }
 
-input UserUpdateWithoutPostsDataInput {
-  name: String
-  email: String
-  comments: CommentUpdateManyWithoutAuthorInput
+input UserUpsertNestedInput {
+  update: UserUpdateDataInput!
+  create: UserCreateInput!
 }
 
-input UserUpsertWithoutCommentsInput {
-  update: UserUpdateWithoutCommentsDataInput!
-  create: UserCreateWithoutCommentsInput!
-}
-
-input UserUpsertWithoutPostsInput {
-  update: UserUpdateWithoutPostsDataInput!
-  create: UserCreateWithoutPostsInput!
+input UserUpsertWithoutReviewsInput {
+  update: UserUpdateWithoutReviewsDataInput!
+  create: UserCreateWithoutReviewsInput!
 }
 
 input UserWhereInput {
@@ -790,40 +705,23 @@ input UserWhereInput {
   updatedAt_lte: DateTime
   updatedAt_gt: DateTime
   updatedAt_gte: DateTime
-  name: String
-  name_not: String
-  name_in: [String!]
-  name_not_in: [String!]
-  name_lt: String
-  name_lte: String
-  name_gt: String
-  name_gte: String
-  name_contains: String
-  name_not_contains: String
-  name_starts_with: String
-  name_not_starts_with: String
-  name_ends_with: String
-  name_not_ends_with: String
-  email: String
-  email_not: String
-  email_in: [String!]
-  email_not_in: [String!]
-  email_lt: String
-  email_lte: String
-  email_gt: String
-  email_gte: String
-  email_contains: String
-  email_not_contains: String
-  email_starts_with: String
-  email_not_starts_with: String
-  email_ends_with: String
-  email_not_ends_with: String
-  posts_every: PostWhereInput
-  posts_some: PostWhereInput
-  posts_none: PostWhereInput
-  comments_every: CommentWhereInput
-  comments_some: CommentWhereInput
-  comments_none: CommentWhereInput
+  username: String
+  username_not: String
+  username_in: [String!]
+  username_not_in: [String!]
+  username_lt: String
+  username_lte: String
+  username_gt: String
+  username_gte: String
+  username_contains: String
+  username_not_contains: String
+  username_starts_with: String
+  username_not_starts_with: String
+  username_ends_with: String
+  username_not_ends_with: String
+  reviews_every: ReviewWhereInput
+  reviews_some: ReviewWhereInput
+  reviews_none: ReviewWhereInput
   AND: [UserWhereInput!]
   OR: [UserWhereInput!]
   NOT: [UserWhereInput!]
@@ -831,7 +729,7 @@ input UserWhereInput {
 
 input UserWhereUniqueInput {
   id: ID
-  email: String
+  username: String
 }
 `
       }

@@ -9,17 +9,17 @@ var models = [
     embedded: false
   },
   {
-    name: "Post",
+    name: "Book",
     embedded: false
   },
   {
-    name: "Comment",
+    name: "Review",
     embedded: false
   }
 ];
 exports.Prisma = prisma_lib_1.makePrismaClientClass({
   typeDefs,
   models,
-  endpoint: `http://localhost:4466`
+  endpoint: `http://localhost:4466/reviews/default`
 });
 exports.prisma = new exports.Prisma();
