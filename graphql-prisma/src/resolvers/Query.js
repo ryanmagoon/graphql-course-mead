@@ -3,7 +3,14 @@ const Query = {
     return query
       ? prisma.users({
           where: {
-            name_contains: query
+            OR: [
+              {
+                name_contains: query
+              },
+              {
+                email_contains: query
+              }
+            ]
           }
         })
       : prisma.users()
