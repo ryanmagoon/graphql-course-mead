@@ -1,20 +1,22 @@
 type User {
   id: ID! @id
+  createdAt: DateTime! @createdAt
+  updatedAt: DateTime! @updatedAt
   name: String!
   email: String! @unique
   posts: [Post!]!
-  createdAt: DateTime! @createdAt
-  updatedAt: DateTime! @updatedAt
+  comments: [Comment!]!
 }
 
 type Post {
   id: ID! @id
+  createdAt: DateTime! @createdAt
+  updatedAt: DateTime! @updatedAt
   title: String!
   body: String!
   published: Boolean!
   author: User!
-  createdAt: DateTime! @createdAt
-  updatedAt: DateTime! @updatedAt
+  comments: [Comment!]!
 }
 
 type Comment {
