@@ -1,6 +1,12 @@
 const Query = {
   users: (parent, { query }, { db: { users }, prisma }, info) => {
-    return prisma.users()
+    return query
+      ? prisma.users({
+          where: {
+            name_contains: query
+          }
+        })
+      : prisma.users()
     // return query
     //   ? users.filter(({ name }) =>
     //       name.toLowerCase().includes(query.toLowerCase())
@@ -19,7 +25,7 @@ const Query = {
     published: false
   }),
   comments: (parent, args, { db: { comments } }, info) => comments,
-  posts: (parent, args, { db: { posts } }, info) => posts
+  posts: (parent, args, { db: { posts }, prisma }, info) => prisma.posts()
 }
 
 export default Query
