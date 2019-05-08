@@ -32,7 +32,21 @@ const Query = {
     published: false
   }),
   comments: (parent, args, { db: { comments } }, info) => comments,
-  posts: (parent, args, { db: { posts }, prisma }, info) => prisma.posts()
+  posts: (parent, { query }, { db: { posts }, prisma }, info) =>
+    query
+      ? prisma.posts({
+          where: {
+            OR: [
+              {
+                title_contains: query
+              },
+              {
+                body_contains: query
+              }
+            ]
+          }
+        })
+      : prisma.posts()
 }
 
 export default Query

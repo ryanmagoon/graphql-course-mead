@@ -23,8 +23,6 @@ const server = new GraphQLServer({
   context: { db, prisma, pubsub }
 })
 
-server.start(async () => {
-  const users = await prisma.users()
-  console.log({ users })
+server.start(() => {
   console.log('The server is up!')
 })
