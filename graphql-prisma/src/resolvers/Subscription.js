@@ -2,10 +2,14 @@ import { prisma } from '../generated/prisma'
 
 const Subscription = {
   comment: {
-    subscribe: async (parent, { postId }, { db, prisma }, info) =>
-      prisma.$subscribe.comment({
-        mutation_in: ['CREATED', 'UPDATED']
-      }),
+    subscribe: async (parent, { postId }, { prisma }, info) =>
+      postId
+        ? prisma.$subscribe.comment({
+            node: {
+              post: { id: postId }
+            }
+          })
+        : prisma.$subscribe.comment(),
     resolve: payload => {
       console.log({ payload })
       return payload
