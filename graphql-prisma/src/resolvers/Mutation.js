@@ -130,28 +130,7 @@ const Mutation = {
 
     return deletedComment
   },
-  deletePost: (parent, args, { db: { posts, comments }, pubsub }, info) => {
-    const postIndex = posts.findIndex(post => post.id === args.id)
-
-    if (postIndex === -1) {
-      throw new Error('Post not found')
-    }
-
-    const [deletedPost] = posts.splice(postIndex, 1)
-
-    comments = comments.filter(comment => comment.post !== args.id)
-
-    if (deletedPost.published) {
-      pubsub.publish('post', {
-        post: {
-          mutation: 'DELETED',
-          data: deletedPost
-        }
-      })
-    }
-
-    return deletedPost
-  }
+  deletePost: (parent, { id }, { prisma }, info) => prisma.deletePost({ id })
 }
 
 export default Mutation
