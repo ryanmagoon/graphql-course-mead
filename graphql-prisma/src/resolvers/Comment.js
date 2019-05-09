@@ -1,9 +1,9 @@
 const Comment = {
-  author: (parent, args, { db: { users } }, info) => {
-    return users.find(user => user.id === parent.author)
+  author: (parent, args, { prisma }, info) => {
+    return prisma.comment({ id: parent.id }).author()
   },
-  post: (parent, args, { db: { posts } }, info) => {
-    return posts.find(post => post.id === parent.post)
+  post: (parent, args, { prisma }, info) => {
+    return prisma.comment({ id: parent.id }).post()
   }
 }
 

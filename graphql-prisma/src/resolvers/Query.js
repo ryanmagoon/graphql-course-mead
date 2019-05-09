@@ -31,7 +31,7 @@ const Query = {
     body: 'get posted on',
     published: false
   }),
-  comments: (parent, args, { db: { comments } }, info) => comments,
+  comments: (parent, args, { prisma }, info) => prisma.comments(),
   posts: (parent, { query }, { db: { posts }, prisma }, info) =>
     query
       ? prisma.posts({

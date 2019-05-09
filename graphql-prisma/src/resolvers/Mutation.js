@@ -22,33 +22,20 @@ const Mutation = {
   },
   updatePost: (parent, { id, data }, { prisma }, info) =>
     prisma.updatePost({ data, where: { id } }),
-  createComment: (
-    parent,
-    { data },
-    { db: { users, posts, comments }, pubsub },
-    info
-  ) => {
-    if (!users.some(user => user.id === data.author)) {
-      throw new Error('invalid user')
-    }
-
-    if (!posts.some(post => post.id === data.post)) {
-      throw new Error('invalid post')
-    }
-    const comment = {
-      id: uuid(),
-      ...data
-    }
-    comments.push(comment)
-    pubsub.publish(`comment ${data.post}`, {
-      comment: {
-        mutation: 'CREATED',
-        data: comment
+  createComment: (parent, { data }, { prisma }, info) =>
+    prisma.createComment({
+      ...data,
+      author: {
+        connect: {
+          id: data.author
+        }
+      },
+      post: {
+        connect: {
+          id: data.post
+        }
       }
-    })
-
-    return comment
-  },
+    }),
   updateComment: (parent, { id, data }, { db, pubsub }, info) => {
     const comment = db.comments.find(comment => comment.id === id)
 
