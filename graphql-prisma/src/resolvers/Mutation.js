@@ -7,9 +7,7 @@ const Mutation = {
       throw new Error('email taken')
     }
 
-    const user = await prisma.createUser(data)
-
-    return user
+    return prisma.createUser(data)
   },
   updateUser: (parent, { id, data }, { db }, info) => {
     const user = db.users.find(user => user.id === id)
@@ -35,25 +33,13 @@ const Mutation = {
 
     return user
   },
-  deleteUser: (parent, args, { db: { users, posts, comments } }, info) => {
-    const userIndex = users.findIndex(user => user.id === args.id)
-
-    if (userIndex === -1) {
+  deleteUser: async (parent, args, { prisma }, info) => {
+    const userExists = await prisma.$exists.user({ id: args.id })
+    if (!userExists) {
       throw new Error('User not found')
     }
 
-    const [deletedUser] = users.splice(userIndex, 1)
-
-    posts = posts.filter(post => {
-      const match = post.author === args.id
-      if (match) {
-        comments = comments.filter(comment => comment.post !== post.id)
-      }
-      return !match
-    })
-    comments = comments.filter(comment => comment.author !== args.id)
-
-    return deletedUser
+    return prisma.deleteUser({ id: args.id })
   },
   createPost: (parent, { data }, { db: { users, posts }, pubsub }, info) => {
     if (!users.some(user => user.id === data.author)) {
