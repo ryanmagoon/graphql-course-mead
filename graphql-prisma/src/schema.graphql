@@ -88,7 +88,7 @@ enum MutationType {
 
 type CommentSubscriptionPayload {
   mutation: MutationType!
-  node: CommentSubscriptionNode!
+  node: Comment
 }
 
 type CommentSubscriptionNode {
