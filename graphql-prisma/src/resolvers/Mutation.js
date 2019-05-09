@@ -2,64 +2,23 @@ import uuid from 'uuid/v4'
 
 const Mutation = {
   createUser: async (parent, { data }, { prisma }, info) => {
-    const emailTaken = await prisma.$exists.user({ email: data.email })
-    if (emailTaken) {
-      throw new Error('email taken')
-    }
-
     return prisma.createUser(data)
   },
-  updateUser: (parent, { id, data }, { db }, info) => {
-    const user = db.users.find(user => user.id === id)
-
-    if (!user) {
-      throw new Error('User not found')
-    }
-
-    if (typeof data.email === 'string') {
-      const emailTaken = db.users.some(user => user.email === data.email)
-      if (emailTaken) {
-        throw new Error('Email taken')
-      }
-    }
-
-    if (typeof data.name === 'string') {
-      user.name = data.name
-    }
-
-    if (typeof data.age !== 'undefined') {
-      user.age = data.age
-    }
-
-    return user
+  updateUser: (parent, { id, data }, { prisma }, info) => {
+    return prisma.updateUser({ data, where: { id } })
   },
   deleteUser: async (parent, args, { prisma }, info) => {
-    const userExists = await prisma.$exists.user({ id: args.id })
-    if (!userExists) {
-      throw new Error('User not found')
-    }
-
     return prisma.deleteUser({ id: args.id })
   },
-  createPost: (parent, { data }, { db: { users, posts }, pubsub }, info) => {
-    if (!users.some(user => user.id === data.author)) {
-      throw new Error('invalid user')
-    }
-    const newPost = {
-      id: uuid(),
-      ...data
-    }
-    posts.push(newPost)
-    if (data.published === true) {
-      pubsub.publish('post', {
-        post: {
-          mutation: 'CREATED',
-          data: newPost
+  createPost: (parent, { data }, { prisma }, info) => {
+    return prisma.createPost({
+      ...data,
+      author: {
+        connect: {
+          id: data.author
         }
-      })
-    }
-
-    return newPost
+      }
+    })
   },
   updatePost: (parent, { id, data }, { db, pubsub }, info) => {
     const post = db.posts.find(post => post.id === id)
