@@ -1,5 +1,3 @@
-import uuid from 'uuid/v4'
-
 const Mutation = {
   createUser: async (parent, { data }, { prisma }, info) => {
     return prisma.createUser(data)
