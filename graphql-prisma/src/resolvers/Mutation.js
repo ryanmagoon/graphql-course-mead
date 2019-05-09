@@ -36,26 +36,8 @@ const Mutation = {
         }
       }
     }),
-  updateComment: (parent, { id, data }, { db, pubsub }, info) => {
-    const comment = db.comments.find(comment => comment.id === id)
-
-    if (!comment) {
-      throw new Error('Comment not found')
-    }
-
-    if (typeof data.text === 'string') {
-      comment.text = data.text
-    }
-
-    pubsub.publish(`comment ${comment.post}`, {
-      comment: {
-        mutation: 'UPDATED',
-        data: comment
-      }
-    })
-
-    return comment
-  },
+  updateComment: (parent, { id, data }, { prisma }, info) =>
+    prisma.updateComment({ data, where: { id } }),
   deleteComment: (parent, { id }, { db: { comments }, pubsub }, info) => {
     const commentIndex = comments.findIndex(comment => comment.id === id)
 
