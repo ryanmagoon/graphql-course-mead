@@ -19,7 +19,7 @@ type Mutation {
 }
 
 type Subscription {
-  comment(postId: ID!): CommentSubscriptionPayload!
+  comment(postId: ID): CommentSubscriptionPayload!
   post: PostSubscriptionPayload!
 }
 
@@ -88,7 +88,14 @@ enum MutationType {
 
 type CommentSubscriptionPayload {
   mutation: MutationType!
-  data: Comment!
+  node: CommentSubscriptionNode!
+}
+
+type CommentSubscriptionNode {
+  id: ID!
+  text: String
+  author: User
+  post: Post
 }
 
 type PostSubscriptionPayload {
