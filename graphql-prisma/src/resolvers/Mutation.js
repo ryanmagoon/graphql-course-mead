@@ -73,12 +73,14 @@ const Mutation = {
 
     return prisma.updatePost({ data, where: { id } })
   },
-  createComment: (parent, { data }, { prisma }, info) =>
-    prisma.createComment({
+  createComment: async (parent, { data }, { prisma, request }, info) => {
+    const userId = await getUserId(request)
+
+    return prisma.createComment({
       ...data,
       author: {
         connect: {
-          id: data.author
+          id: userId
         }
       },
       post: {
@@ -86,7 +88,8 @@ const Mutation = {
           id: data.post
         }
       }
-    }),
+    })
+  },
   updateComment: (parent, { id, data }, { prisma }, info) =>
     prisma.updateComment({ data, where: { id } }),
   deleteComment: (parent, { id }, { prisma }, info) =>
