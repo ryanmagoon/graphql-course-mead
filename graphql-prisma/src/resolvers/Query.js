@@ -1,5 +1,5 @@
 const Query = {
-  users: (parent, { query }, { db: { users }, prisma }, info) => {
+  users: (parent, { query }, { prisma }, info) => {
     return query
       ? prisma.users({
           where: {
@@ -14,11 +14,6 @@ const Query = {
           }
         })
       : prisma.users()
-    // return query
-    //   ? users.filter(({ name }) =>
-    //       name.toLowerCase().includes(query.toLowerCase())
-    //     )
-    //   : users
   },
   me: () => ({
     id: '8675309',
@@ -32,7 +27,7 @@ const Query = {
     published: false
   }),
   comments: (parent, args, { prisma }, info) => prisma.comments(),
-  posts: (parent, { query }, { db: { posts }, prisma }, info) =>
+  posts: (parent, { query }, { prisma }, info) =>
     query
       ? prisma.posts({
           where: {

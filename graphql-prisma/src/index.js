@@ -20,7 +20,11 @@ const server = new GraphQLServer({
     User,
     Comment
   },
-  context: { db, prisma, pubsub }
+  context: request => ({
+    prisma,
+    pubsub,
+    request
+  })
 })
 
 server.start(() => {

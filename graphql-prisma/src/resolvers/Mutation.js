@@ -1,6 +1,8 @@
 import bcrypt from 'bcryptjs'
 import jwt from 'jsonwebtoken'
 
+import getUserId from '../utils/getUserId'
+
 const Mutation = {
   login: async (parent, { email, password }, { prisma }, info) => {
     const user = await prisma.user({ email })
@@ -12,6 +14,11 @@ const Mutation = {
     const passwordMatch = await bcrypt.compare(password, user.password)
     if (!passwordMatch) {
       throw new Error('Invalid password')
+    }
+
+    return {
+      user,
+      token: jwt.sign({ userId: user.id }, 'thisismysecret')
     }
   },
   createUser: async (parent, { data }, { prisma }, info) => {
@@ -31,18 +38,24 @@ const Mutation = {
       token: jwt.sign({ userId: user.id }, 'thisismysecret')
     }
   },
-  updateUser: (parent, { id, data }, { prisma }, info) => {
-    return prisma.updateUser({ data, where: { id } })
+  updateUser: (parent, { data }, { prisma, request }, info) => {
+    const userId = getUserId(request)
+
+    return prisma.updateUser({ data, where: { id: userId } })
   },
-  deleteUser: async (parent, args, { prisma }, info) => {
-    return prisma.deleteUser({ id: args.id })
+  deleteUser: async (parent, args, { prisma, request }, info) => {
+    const userId = getUserId(request)
+
+    return prisma.deleteUser({ id: userId })
   },
-  createPost: (parent, { data }, { prisma }, info) => {
+  createPost: (parent, { data }, { prisma, request }, info) => {
+    const userId = getUserId(request)
+
     return prisma.createPost({
       ...data,
       author: {
         connect: {
-          id: data.author
+          id: userId
         }
       }
     })
