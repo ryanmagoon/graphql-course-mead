@@ -14,10 +14,10 @@ const Subscription = {
     }
   },
   post: {
-    subscribe: (parent, { published }, { pubsub }, info) =>
+    subscribe: (parent, args, { pubsub }, info) =>
       prisma.$subscribe.post({
         node: {
-          published
+          published: true
         }
       }),
     resolve: payload => {
