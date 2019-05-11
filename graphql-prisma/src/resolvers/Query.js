@@ -36,10 +36,11 @@ const Query = {
     return posts[0]
   },
   comments: (parent, args, { prisma }, info) => prisma.comments(),
-  posts: (parent, { query }, { prisma }, info) =>
-    query
+  posts: (parent, { query }, { prisma }, info) => {
+    return query
       ? prisma.posts({
           where: {
+            published: true,
             OR: [
               {
                 title_contains: query
@@ -50,7 +51,35 @@ const Query = {
             ]
           }
         })
-      : prisma.posts()
+      : prisma.posts({ where: { published: true } })
+  },
+  myPosts: async (parent, { query }, { prisma, request }, info) => {
+    const userId = await getUserId(request)
+
+    return query
+      ? prisma.posts({
+          where: {
+            author: {
+              id: userId
+            },
+            OR: [
+              {
+                title_contains: query
+              },
+              {
+                body_contains: query
+              }
+            ]
+          }
+        })
+      : prisma.posts({
+          where: {
+            author: {
+              id: userId
+            }
+          }
+        })
+  }
 }
 
 export default Query
