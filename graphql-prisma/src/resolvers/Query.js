@@ -1,11 +1,12 @@
 import getUserId from '../utils/getUserId'
 
 const Query = {
-  users: (parent, { query, first, skip }, { prisma }, info) => {
+  users: (parent, { query, first, skip, after }, { prisma }, info) => {
     return query
       ? prisma.users({
           first,
           skip,
+          after,
           where: {
             OR: [
               {
@@ -17,7 +18,7 @@ const Query = {
             ]
           }
         })
-      : prisma.users({ first, skip })
+      : prisma.users({ first, skip, after })
   },
   me: async (parent, args, { prisma, request }, info) => {
     const userId = getUserId(request)
@@ -38,9 +39,12 @@ const Query = {
     return posts[0]
   },
   comments: (parent, args, { prisma }, info) => prisma.comments(),
-  posts: (parent, { query }, { prisma }, info) => {
+  posts: (parent, { query, first, skip, after }, { prisma }, info) => {
     return query
       ? prisma.posts({
+          first,
+          skip,
+          after,
           where: {
             published: true,
             OR: [
@@ -53,13 +57,21 @@ const Query = {
             ]
           }
         })
-      : prisma.posts({ where: { published: true } })
+      : prisma.posts({ first, skip, where: { published: true } })
   },
-  myPosts: async (parent, { query }, { prisma, request }, info) => {
+  myPosts: async (
+    parent,
+    { query, first, skip, after },
+    { prisma, request },
+    info
+  ) => {
     const userId = await getUserId(request)
 
     return query
       ? prisma.posts({
+          first,
+          skip,
+          after,
           where: {
             author: {
               id: userId
@@ -75,6 +87,9 @@ const Query = {
           }
         })
       : prisma.posts({
+          first,
+          skip,
+          after,
           where: {
             author: {
               id: userId
