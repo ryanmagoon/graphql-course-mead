@@ -5,3 +5,5 @@ secret: temporarysecret
 generate:
   - generator: javascript-client
     output: ../src/generated/prisma
+  - generator: graphql-schema
+    output: ../src/generated/prisma/prisma-schema.graphql

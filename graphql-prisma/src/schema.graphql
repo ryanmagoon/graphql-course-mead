@@ -1,3 +1,5 @@
+# import UserOrderByInput from './generated/prisma/prisma-schema.graphql'
+
 type Query {
   users(query: String, first: Int, skip: Int, after: ID): [User!]!
   me: User!
