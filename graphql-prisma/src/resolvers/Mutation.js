@@ -76,6 +76,9 @@ const Mutation = {
   createComment: async (parent, { data }, { prisma, request }, info) => {
     const userId = await getUserId(request)
 
+    const post = await prisma.post({ id: data.post })
+    if (!post.published) throw new Error('Invalid post')
+
     return prisma.createComment({
       ...data,
       author: {
