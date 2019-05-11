@@ -71,6 +71,13 @@ const Mutation = {
 
     if (!postExists) throw new Error('Unable to update post')
 
+    const post = await prisma.post({ id })
+    if (post.published && !data.published) {
+      await prisma.deleteManyComments({
+        post: { id }
+      })
+    }
+
     return prisma.updatePost({ data, where: { id } })
   },
   createComment: async (parent, { data }, { prisma, request }, info) => {
