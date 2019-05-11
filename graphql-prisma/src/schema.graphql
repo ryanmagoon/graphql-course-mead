@@ -66,6 +66,8 @@ input UpdateCommentInput {
 
 type User {
   id: ID!
+  createdAt: String!
+  updatedAt: String!
   name: String!
   email: String
   password: String!
@@ -75,6 +77,8 @@ type User {
 
 type Post {
   id: ID!
+  createdAt: String!
+  updatedAt: String!
   title: String!
   body: String!
   published: Boolean!
@@ -84,6 +88,8 @@ type Post {
 
 type Comment {
   id: ID!
+  createdAt: String!
+  updatedAt: String!
   text: String!
   author: User!
   post: Post!
