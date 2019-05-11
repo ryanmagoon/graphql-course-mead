@@ -9,12 +9,11 @@ const User = {
       return id === userId ? email : null
     }
   },
-  posts: (parent, args, { prisma }, info) =>
-    prisma
-      .user({
-        id: parent.id
-      })
-      .posts(),
+  posts: {
+    fragment: 'fragment userId on User { id }',
+    resolve: ({ id }, args, { prisma }, info) =>
+      prisma.posts({ where: { author: { id }, published: true } })
+  },
   comments: (parent, args, { prisma }, info) =>
     prisma
       .user({
