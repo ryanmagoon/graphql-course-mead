@@ -38,7 +38,8 @@ const Query = {
 
     return posts[0]
   },
-  comments: (parent, args, { prisma }, info) => prisma.comments(),
+  comments: (parent, { first, skip, after }, { prisma }, info) =>
+    prisma.comments({ first, skip, after }),
   posts: (parent, { query, first, skip, after }, { prisma }, info) => {
     return query
       ? prisma.posts({
