@@ -1,4 +1,4 @@
-import { prisma } from '../generated/prisma'
+import getUserId from '../utils/getUserId'
 
 const Subscription = {
   comment: {
@@ -8,22 +8,28 @@ const Subscription = {
           post: { id: postId }
         }
       }),
-    resolve: payload => {
-      console.log({ payload })
-      return payload
-    }
+    resolve: payload => payload
   },
   post: {
-    subscribe: (parent, args, { pubsub }, info) =>
+    subscribe: (parent, args, { prisma }, info) =>
       prisma.$subscribe.post({
         node: {
           published: true
         }
       }),
-    resolve: payload => {
-      console.log({ payload })
-      return payload
-    }
+    resolve: payload => payload
+  },
+  myPost: {
+    subscribe: (parent, args, { prisma, request }, info) => {
+      const userId = getUserId(request)
+
+      return prisma.$subscribe.post({
+        node: {
+          author: { id: userId }
+        }
+      })
+    },
+    resolve: payload => payload
   }
 }
 
