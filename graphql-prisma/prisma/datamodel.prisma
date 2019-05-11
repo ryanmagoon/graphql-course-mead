@@ -22,6 +22,8 @@ type Post {
 
 type Comment {
   id: ID! @id
+  createdAt: DateTime! @createdAt
+  updatedAt: DateTime! @updatedAt
   text: String!
   author: User! @relation(name: "CommentToUser", onDelete: SET_NULL)
   post: Post! @relation(name: "CommentToPost", onDelete: SET_NULL)
