@@ -1,0 +1,19 @@
+{
+  "name": "apollo-client",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "parcel src/index.html"
+  },
+  "keywords": [],
+  "author": "Ryan Magoon <mr.magoon5@gmail.com> (http://www.ryanmagoon.com)",
+  "license": "MIT",
+  "devDependencies": {
+    "parcel-bundler": "^1.12.3"
+  },
+  "dependencies": {
+    "apollo-boost": "^0.3.1",
+    "graphql": "^14.3.0"
+  }
+}
