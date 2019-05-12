@@ -1,12 +1,13 @@
 import getUserId from '../utils/getUserId'
 
 const Query = {
-  users: (parent, { query, first, skip, after }, { prisma }, info) => {
+  users: (parent, { query, first, skip, after, orderBy }, { prisma }, info) => {
     return query
       ? prisma.users({
           first,
           skip,
           after,
+          orderBy,
           where: {
             OR: [
               {
@@ -18,7 +19,7 @@ const Query = {
             ]
           }
         })
-      : prisma.users({ first, skip, after })
+      : prisma.users({ first, skip, after, orderBy })
   },
   me: async (parent, args, { prisma, request }, info) => {
     const userId = getUserId(request)

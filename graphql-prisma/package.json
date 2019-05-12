@@ -4,8 +4,10 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon src/index.js --ext js,graphql --exec babel-node",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "env-cmd -f ./config/prod.env node dist/index.js",
+    "dev": "env-cmd -f ./config/dev.env nodemon src/index.js --ext js,graphql --exec babel-node",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "heroku-postbuild": "babel src --out-dir dist --copy-files"
   },
   "keywords": [],
   "author": "Ryan Magoon <mr.magoon5@gmail.com> (http://www.ryanmagoon.com)",
@@ -14,8 +16,10 @@
     "@babel/cli": "^7.4.4",
     "@babel/core": "^7.4.4",
     "@babel/node": "^7.2.2",
+    "@babel/polyfill": "^7.4.4",
     "@babel/preset-env": "^7.4.4",
     "bcryptjs": "^2.4.3",
+    "env-cmd": "^9.0.1",
     "graphql-yoga": "^1.17.4",
     "jsonwebtoken": "^8.5.1",
     "node-uuid": "^1.4.8",
