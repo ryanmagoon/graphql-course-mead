@@ -60,3 +60,44 @@ test('should create a new user', async () => {
     await prisma.$exists.user({ id: response.data.createUser.user.id })
   ).toBe(true)
 })
+
+test('should expose public author profiles', async () => {
+  const getUsers = gql`
+    query {
+      users {
+        id
+        name
+        email
+      }
+    }
+  `
+  const response = await client.query({ query: getUsers })
+  expect(response.data.users.length).toBe(1)
+  expect(response.data.users[0].email).toBe(null)
+  expect(response.data.users[0].name).toBe('Jen')
+})
+
+test('should return only published posts from public posts query', async () => {
+  const getPosts = gql`
+    query {
+      posts {
+        id
+        published
+      }
+    }
+  `
+  const response = await client.query({ query: getPosts })
+  expect(response.data.posts.length).toBe(1)
+  expect(response.data.posts[0].published).toBe(true)
+})
+
+test('should not log in with bad credentials', () => {
+  const login = gql`
+    mutation {
+      login(data: { email: "jeff@example.com", password: "notgonnawork" }) {
+        token
+      }
+    }
+  `
+  expect(client.mutate({ mutation: login })).rejects.toThrow()
+})
