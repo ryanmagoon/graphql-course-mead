@@ -19,6 +19,9 @@ const getPosts = gql`
       id
       title
       body
+      author {
+        name
+      }
     }
   }
 `
@@ -28,7 +31,7 @@ client
     query: getUsers
   })
   .then(({ data: { users } }) => {
-    let html = ''
+    let html = '<h2>users</h2>'
 
     for (const user of users) {
       html += `<h3>${user.name}</h3>`
@@ -42,10 +45,14 @@ client
     query: getPosts
   })
   .then(({ data: { posts } }) => {
-    let html = ''
+    let html = '<h2>posts</h2>'
 
-    for (const post of posts) {
-      html += `<h3>${post.title}</h3>`
+    for (const {
+      title,
+      body,
+      author: { name }
+    } of posts) {
+      html += `<h3>${title}</h3><h5>author: ${name}</h5><p>${body}</p>`
     }
 
     document.getElementById('posts').innerHTML = html
