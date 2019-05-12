@@ -91,13 +91,29 @@ test('should return only published posts from public posts query', async () => {
   expect(response.data.posts[0].published).toBe(true)
 })
 
-test('should not log in with bad credentials', () => {
+test('should not log in with bad credentials', async () => {
   const login = gql`
     mutation {
-      login(data: { email: "jeff@example.com", password: "notgonnawork" }) {
+      login(email: "jeff@example.com", password: "notgonnawork") {
         token
       }
     }
   `
-  expect(client.mutate({ mutation: login })).rejects.toThrow()
+  await expect(client.mutate({ mutation: login })).rejects.toThrow()
+})
+
+test('should not sign up with short password', async () => {
+  const createUser = gql`
+    mutation {
+      createUser(
+        data: { name: "Ryan", email: "ryan@example.com", password: "nope" }
+      ) {
+        token
+        user {
+          id
+        }
+      }
+    }
+  `
+  await expect(client.mutate({ mutation: createUser })).rejects.toThrow()
 })
