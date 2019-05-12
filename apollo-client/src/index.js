@@ -52,7 +52,13 @@ client
       body,
       author: { name }
     } of posts) {
-      html += `<h3>${title}</h3><h5>author: ${name}</h5><p>${body}</p>`
+      html += `
+        <div>
+          <h3>${title}</h3>
+          <h5>author: ${name}</h5>
+          <p>${body}</p>
+        </div>
+      `
     }
 
     document.getElementById('posts').innerHTML = html
