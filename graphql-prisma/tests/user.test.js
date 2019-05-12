@@ -1,26 +1,35 @@
-import { getFirstName, isValidPassword } from '../src/utils/user'
+import 'cross-fetch/polyfill'
+import ApolloClient, { gql } from 'apollo-boost'
 
-test('should return first name when given full name', () => {
-  const firstName = getFirstName('Ryan Magoon')
-  expect(firstName).toBe('Ryan')
+import { prisma } from '../src/generated/prisma'
+
+const client = new ApolloClient({
+  uri: 'http://localhost:4000'
 })
 
-test('should return first name when given first name', () => {
-  const firstName = getFirstName('Ryan')
-  expect(firstName).toBe('Ryan')
+beforeEach(async () => {
+  await prisma.deleteManyUsers()
 })
 
-test('should reject password shorter than 8 characters', () => {
-  const result = isValidPassword('asdf')
-  expect(result).toBe(false)
-})
-
-test('should reject password that contains the word "password"', () => {
-  const result = isValidPassword('xxpassword123xx')
-  expect(result).toBe(false)
-})
-
-test('should validate a valid password', () => {
-  const result = isValidPassword('asdf1234')
-  expect(result).toBe(true)
+test('should create a new user', async () => {
+  const createUser = gql`
+    mutation {
+      createUser(
+        data: {
+          name: "Ryan"
+          email: "ryan@example.com"
+          password: "mypassword123"
+        }
+      ) {
+        token
+        user {
+          id
+        }
+      }
+    }
+  `
+  const response = await client.mutate({ mutation: createUser })
+  expect(
+    await prisma.$exists.user({ id: response.data.createUser.user.id })
+  ).toBe(true)
 })
