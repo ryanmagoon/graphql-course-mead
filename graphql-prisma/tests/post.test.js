@@ -1,12 +1,11 @@
 import 'cross-fetch/polyfill'
-import ApolloClient, { gql } from 'apollo-boost'
+import { gql } from 'apollo-boost'
 
 import { prisma } from '../src/generated/prisma'
 import seedDatabase from './utils/seedDatabase'
+import getClient from './utils/getClient'
 
-const client = new ApolloClient({
-  uri: 'http://localhost:4000'
-})
+const client = getClient()
 
 beforeEach(seedDatabase)
 
