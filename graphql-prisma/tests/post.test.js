@@ -2,7 +2,7 @@ import 'cross-fetch/polyfill'
 import { gql } from 'apollo-boost'
 
 import { prisma } from '../src/generated/prisma'
-import seedDatabase, { userOne } from './utils/seedDatabase'
+import seedDatabase, { userOne, postOne } from './utils/seedDatabase'
 import getClient from './utils/getClient'
 
 const client = getClient()
@@ -38,4 +38,33 @@ test('should return all users posts for authenticated user', async () => {
   const { data } = await authenticatedClient.query({ query: getMyPosts })
 
   expect(data.myPosts.length).toBe(2)
+})
+
+test('Should be able to update own post', async () => {
+  const authenticatedClient = getClient({ jwt: userOne.jwt })
+
+  const updatePost = gql`
+    mutation {
+      updatePost(
+        id: "${postOne.post.id}"
+        data: {
+          published: false
+        }
+        ) {
+        id
+        title
+        body
+        published
+      }
+    }
+  `
+
+  const { data } = await authenticatedClient.mutate({ mutation: updatePost })
+  const exists = await prisma.$exists.post({
+    id: postOne.post.id,
+    published: false
+  })
+
+  expect(data.updatePost.published).toBe(false)
+  expect(exists).toBe(true)
 })
