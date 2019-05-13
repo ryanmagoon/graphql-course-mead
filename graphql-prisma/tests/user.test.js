@@ -4,49 +4,11 @@ import { gql } from 'apollo-boost'
 import { prisma } from '../src/generated/prisma'
 import seedDatabase, { userOne } from './utils/seedDatabase'
 import getClient from './utils/getClient'
+import { createUser, getUsers, login, getProfile } from './utils/operations'
 
 const client = getClient()
 
 beforeEach(seedDatabase)
-
-const createUser = gql`
-  mutation($data: CreateUserInput!) {
-    createUser(data: $data) {
-      token
-      user {
-        id
-      }
-    }
-  }
-`
-
-const getUsers = gql`
-  query {
-    users {
-      id
-      name
-      email
-    }
-  }
-`
-
-const login = gql`
-  mutation($email: String!, $password: String!) {
-    login(email: $email, password: $password) {
-      token
-    }
-  }
-`
-
-const getProfile = gql`
-  query {
-    me {
-      id
-      name
-      email
-    }
-  }
-`
 
 test('should create a new user', async () => {
   const variables = {
