@@ -20,6 +20,34 @@ const createUser = gql`
   }
 `
 
+const getUsers = gql`
+  query {
+    users {
+      id
+      name
+      email
+    }
+  }
+`
+
+const login = gql`
+  mutation($email: String!, $password: String!) {
+    login(email: $email, password: $password) {
+      token
+    }
+  }
+`
+
+const getProfile = gql`
+  query {
+    me {
+      id
+      name
+      email
+    }
+  }
+`
+
 test('should create a new user', async () => {
   const variables = {
     data: {
@@ -36,15 +64,6 @@ test('should create a new user', async () => {
 })
 
 test('should expose public author profiles', async () => {
-  const getUsers = gql`
-    query {
-      users {
-        id
-        name
-        email
-      }
-    }
-  `
   const response = await client.query({ query: getUsers })
   expect(response.data.users.length).toBe(1)
   expect(response.data.users[0].email).toBe(null)
@@ -52,14 +71,8 @@ test('should expose public author profiles', async () => {
 })
 
 test('should not log in with bad credentials', async () => {
-  const login = gql`
-    mutation {
-      login(email: "jeff@example.com", password: "notgonnawork") {
-        token
-      }
-    }
-  `
-  await expect(client.mutate({ mutation: login })).rejects.toThrow()
+  const variables = { email: 'jeff@example.com', password: 'notgonnawork' }
+  await expect(client.mutate({ mutation: login, variables })).rejects.toThrow()
 })
 
 test('should not sign up with short password', async () => {
@@ -73,15 +86,6 @@ test('should not sign up with short password', async () => {
 
 test('should fetch user profile', async () => {
   const authenticatedClient = getClient({ jwt: userOne.jwt })
-  const getProfile = gql`
-    query {
-      me {
-        id
-        name
-        email
-      }
-    }
-  `
   const { data } = await authenticatedClient.query({ query: getProfile })
 
   expect(data.me.id).toBe(userOne.user.id)
