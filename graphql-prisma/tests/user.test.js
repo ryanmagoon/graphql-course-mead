@@ -49,20 +49,6 @@ test('should expose public author profiles', async () => {
   expect(response.data.users[0].name).toBe('Jen')
 })
 
-test('should return only published posts from public posts query', async () => {
-  const getPosts = gql`
-    query {
-      posts {
-        id
-        published
-      }
-    }
-  `
-  const response = await client.query({ query: getPosts })
-  expect(response.data.posts.length).toBe(1)
-  expect(response.data.posts[0].published).toBe(true)
-})
-
 test('should not log in with bad credentials', async () => {
   const login = gql`
     mutation {
