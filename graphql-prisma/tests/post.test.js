@@ -68,3 +68,53 @@ test('Should be able to update own post', async () => {
   expect(data.updatePost.published).toBe(false)
   expect(exists).toBe(true)
 })
+
+test('Should be able to create a post', async () => {
+  const authenticatedClient = getClient({ jwt: userOne.jwt })
+
+  const createPost = gql`
+    mutation {
+      createPost(
+        data: {
+          title: "this is the third post"
+          body: "I tell you what"
+          published: true
+        }
+      ) {
+        id
+        title
+        body
+        published
+      }
+    }
+  `
+
+  const { data } = await authenticatedClient.mutate({ mutation: createPost })
+  const exists = await prisma.$exists.post({
+    id: data.createPost.id,
+    title: 'this is the third post',
+    body: 'I tell you what',
+    published: true
+  })
+
+  expect(exists).toBe(true)
+})
+
+test('should be able to delete own post', async () => {
+  const authenticatedClient = getClient({ jwt: userOne.jwt })
+
+  const deletePost = gql`
+    mutation {
+      deletePost(id: "${postOne.post.id}") {
+        id
+        title
+        body
+      }
+    }
+  `
+
+  const { data } = await authenticatedClient.mutate({ mutation: deletePost })
+
+  const postCount = await prisma.user({ id: userOne.user.id }).posts()
+  expect(postCount.length).toBe(1)
+})
