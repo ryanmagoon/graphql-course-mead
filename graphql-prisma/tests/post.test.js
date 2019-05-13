@@ -2,7 +2,7 @@ import 'cross-fetch/polyfill'
 import { gql } from 'apollo-boost'
 
 import { prisma } from '../src/generated/prisma'
-import seedDatabase, { userOne, postOne } from './utils/seedDatabase'
+import seedDatabase, { userOne, postOne, postTwo } from './utils/seedDatabase'
 import getClient from './utils/getClient'
 
 const client = getClient()
@@ -105,7 +105,7 @@ test('should be able to delete own post', async () => {
 
   const deletePost = gql`
     mutation {
-      deletePost(id: "${postOne.post.id}") {
+      deletePost(id: "${postTwo.post.id}") {
         id
         title
         body
@@ -115,6 +115,6 @@ test('should be able to delete own post', async () => {
 
   const { data } = await authenticatedClient.mutate({ mutation: deletePost })
 
-  const postCount = await prisma.user({ id: userOne.user.id }).posts()
-  expect(postCount.length).toBe(1)
+  const exists = await prisma.$exists.post({ id: postTwo.post.id })
+  expect(exists).toBe(false)
 })

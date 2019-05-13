@@ -20,6 +20,14 @@ const postOne = {
   post: undefined
 }
 
+const postTwo = {
+  input: {
+    title: 'my second post!',
+    body: 'look at my second post',
+    published: true
+  }
+}
+
 const seedDatabase = async () => {
   // delete test data
   await prisma.deleteManyPosts()
@@ -40,17 +48,15 @@ const seedDatabase = async () => {
   })
 
   //create post two
-  await prisma.createPost({
-    title: 'my second post!',
-    body: 'look at my second post',
+  postTwo.post = await prisma.createPost({
+    ...postTwo.input,
     author: {
       connect: {
         id: userOne.user.id
       }
-    },
-    published: true
+    }
   })
 }
 
-export { userOne, postOne }
+export { userOne, postOne, postTwo }
 export default seedDatabase
