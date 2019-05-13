@@ -38,3 +38,53 @@ export const getProfile = gql`
     }
   }
 `
+export const getPosts = gql`
+  query {
+    posts {
+      id
+      published
+    }
+  }
+`
+
+export const getMyPosts = gql`
+  query {
+    myPosts {
+      id
+      title
+      body
+      published
+    }
+  }
+`
+
+export const updatePost = gql`
+  mutation($id: String!, $data: UpdatePostInput!) {
+    updatePost(id: $id, data: $data) {
+      id
+      title
+      body
+      published
+    }
+  }
+`
+
+export const createPost = gql`
+  mutation($data: CreatePostInput!) {
+    createPost(data: $data) {
+      id
+      title
+      body
+      published
+    }
+  }
+`
+export const deletePost = gql`
+  mutation($id: String!) {
+    deletePost(id: $id) {
+      id
+      title
+      body
+    }
+  }
+`
