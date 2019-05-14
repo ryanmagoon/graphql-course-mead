@@ -8,7 +8,18 @@ const userOne = {
     email: 'jen@example.com',
     password: bcrypt.hashSync('buttnugget')
   },
-  user: undefined
+  user: undefined,
+  jwt: undefined
+}
+
+const userTwo = {
+  input: {
+    name: 'Brad',
+    email: 'brad@example.com',
+    password: bcrypt.hashSync('buttnugget')
+  },
+  user: undefined,
+  jwt: undefined
 }
 
 const postOne = {
@@ -25,6 +36,19 @@ const postTwo = {
     title: 'my second post!',
     body: 'look at my second post',
     published: true
+  },
+  post: undefined
+}
+
+const commentOne = {
+  input: {
+    text: 'I love this post'
+  }
+}
+
+const commentTwo = {
+  input: {
+    text: 'Thanks brochacho'
   }
 }
 
@@ -36,6 +60,10 @@ const seedDatabase = async () => {
   // create user one
   userOne.user = await prisma.createUser(userOne.input)
   userOne.jwt = jwt.sign({ userId: userOne.user.id }, process.env.JWT_SECRET)
+
+  // create user two
+  userTwo.user = await prisma.createUser(userTwo.input)
+  userTwo.jwt = jwt.sign({ userId: userTwo.user.id }, process.env.JWT_SECRET)
 
   // create post one
   postOne.post = await prisma.createPost({
@@ -56,7 +84,21 @@ const seedDatabase = async () => {
       }
     }
   })
+
+  // create comment one
+  commentOne.comment = await prisma.createComment({
+    ...commentOne.input,
+    author: { connect: { id: userTwo.user.id } },
+    post: { connect: { id: postOne.post.id } }
+  })
+
+  // create comment two
+  commentTwo.comment = await prisma.createComment({
+    ...commentTwo.input,
+    author: { connect: { id: userOne.user.id } },
+    post: { connect: { id: postOne.post.id } }
+  })
 }
 
-export { userOne, postOne, postTwo }
+export { userOne, postOne, postTwo, userTwo, commentOne, commentTwo }
 export default seedDatabase

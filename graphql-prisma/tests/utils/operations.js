@@ -59,7 +59,7 @@ export const getMyPosts = gql`
 `
 
 export const updatePost = gql`
-  mutation($id: String!, $data: UpdatePostInput!) {
+  mutation($id: ID!, $data: UpdatePostInput!) {
     updatePost(id: $id, data: $data) {
       id
       title
@@ -80,7 +80,7 @@ export const createPost = gql`
   }
 `
 export const deletePost = gql`
-  mutation($id: String!) {
+  mutation($id: ID!) {
     deletePost(id: $id) {
       id
       title

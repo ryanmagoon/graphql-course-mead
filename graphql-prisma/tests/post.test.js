@@ -32,7 +32,7 @@ test('should return all users posts for authenticated user', async () => {
 test('Should be able to update own post', async () => {
   const authenticatedClient = getClient({ jwt: userOne.jwt })
   const variables = {
-    id: '${postOne.post.id}',
+    id: postOne.post.id,
     data: {
       published: false
     }
@@ -78,7 +78,7 @@ test('Should be able to create a post', async () => {
 test('should be able to delete own post', async () => {
   const authenticatedClient = getClient({ jwt: userOne.jwt })
   const variables = {
-    id: '${postTwo.post.id}'
+    id: postTwo.post.id
   }
 
   const { data } = await authenticatedClient.mutate({
