@@ -81,7 +81,7 @@ test('should be able to delete own post', async () => {
     id: postTwo.post.id
   }
 
-  const { data } = await authenticatedClient.mutate({
+  await authenticatedClient.mutate({
     mutation: deletePost,
     variables
   })

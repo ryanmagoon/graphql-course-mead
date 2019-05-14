@@ -43,13 +43,15 @@ const postTwo = {
 const commentOne = {
   input: {
     text: 'I love this post'
-  }
+  },
+  comment: undefined
 }
 
 const commentTwo = {
   input: {
     text: 'Thanks brochacho'
-  }
+  },
+  comment: undefined
 }
 
 const seedDatabase = async () => {

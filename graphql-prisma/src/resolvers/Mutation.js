@@ -118,13 +118,12 @@ const Mutation = {
 
     return prisma.updateComment({ data, where: { id } })
   },
-  deleteComment: async (parent, { id }, { prisma }, info) => {
+  deleteComment: async (parent, { id }, { prisma, request }, info) => {
     const userId = getUserId(request)
     const commentExists = await prisma.$exists.comment({
       id,
       author: {
-        id: userId,
-        OR: [{ published: true, author: { id: userId } }]
+        id: userId
       }
     })
 
