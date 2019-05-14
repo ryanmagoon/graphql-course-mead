@@ -1,3 +1,3 @@
-module.exports = async () => {
-  await global.httpServer.close()
+module.exports = () => {
+  global.httpServer.close(() => console.log('test server shut down'))
 }
